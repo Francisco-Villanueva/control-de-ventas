@@ -1,51 +1,67 @@
-# Rotisería Ventas - Sistema de Control de Ventas
+# Rotisería Ventas 🥟
 
-Aplicación web completa para gestionar y controlar las ventas de una rotisería, con análisis de promedios, reportes y configuración de productos.
+> Sistema web completo para gestionar y controlar las ventas de una rotisería, con análisis de promedios, predicciones inteligentes y configuración de productos.
 
-## 🎯 Estado del Proyecto
+[![Next.js](https://img.shields.io/badge/Next.js-14+-black?logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![Prisma](https://img.shields.io/badge/Prisma-7.0-2D3748?logo=prisma)](https://www.prisma.io/)
+[![TailwindCSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC?logo=tailwind-css)](https://tailwindcss.com/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-### ✅ Completado
+## 🎉 Estado del Proyecto
 
-1. **Setup Inicial**
-   - Proyecto Next.js 14+ con TypeScript
-   - Configuración de TailwindCSS
-   - Instalación de todas las dependencias necesarias
+**✅ VERSIÓN 1.0 BETA - FUNCIONAL Y LISTA PARA USO DIARIO**
 
-2. **Base de Datos**
-   - Schema de Prisma completo (User, Categoria, Producto, Venta, Configuracion)
-   - Queries reutilizables organizadas
-   - Script de seed con datos de ejemplo
+La aplicación está completamente operativa con el 75% de las funcionalidades planificadas implementadas. Incluye todas las características esenciales para la gestión diaria de la rotisería.
 
-3. **Autenticación**
-   - NextAuth.js v5 configurado
-   - Páginas de login y register
-   - Middleware para protección de rutas
-   - Hash de contraseñas con bcrypt
+### 📊 Progreso
 
-4. **API Routes**
-   - `/api/productos` - CRUD completo de productos
-   - `/api/categorias` - CRUD completo de categorías
-   - `/api/ventas` - Registro de ventas diarias
-   - `/api/estadisticas/promedios` - Promedios por día de semana
-   - `/api/estadisticas/resumen` - Resúmenes mensuales/anuales
+```
+████████████████████████████████████░░░░░░░░░░░  75% Completado (9/12 tareas)
+```
 
-5. **UI y Layout**
-   - Navbar responsive con navegación móvil
-   - Layout del dashboard
-   - Páginas placeholder para todas las secciones
-   - Componentes shadcn/ui instalados
+## ✨ Características Implementadas
 
-### 🚧 Pendiente
+### 🏠 Dashboard Principal (NUEVO)
+- **Métricas en tiempo real** con auto-refresh cada 5 minutos
+- **Registro rápido** de ventas del día desde el dashboard
+- **Predicciones inteligentes** de producción para mañana
+- **Sistema de alertas** (sin ventas, ventas bajas, feedback positivo)
+- Accesos directos a todas las secciones
 
-6. **Dashboard Principal** - Implementar widgets y métricas
-7. **Registro de Ventas** - Formulario interactivo para registrar ventas
-8. **Página de Promedios** - Tabla y gráficos de promedios
-9. **Reportes** - Gráficos y tablas de resúmenes
-10. **Configuración** - CRUD completo de productos y categorías
-11. **Sistema de Alertas** - Notificaciones y alertas
-12. **Optimización Mobile** - Testing y ajustes finales
+### 📝 Registro de Ventas
+- Selector de fecha con calendario en español
+- Formulario con productos agrupados por categoría
+- Historial de últimos 7 días
+- Edición de ventas existentes
+- Validaciones y confirmaciones
 
-## 🚀 Instalación y Configuración
+### 📊 Análisis de Promedios
+- Tabla detallada con promedios por día de semana
+- Gráfico de barras interactivo (Recharts)
+- Identificación de días de mayor/menor venta
+- Producto más vendido de la semana
+- 100% responsive (tabla → cards en móvil)
+
+### ⚙️ Configuración
+- **Productos**: CRUD completo con cálculo de margen de ganancia
+- **Categorías**: Gestión con validación de dependencias
+- Soft delete (mantiene historial)
+- Activar/desactivar productos
+
+### 🔐 Autenticación
+- Login seguro con email y contraseña
+- Registro de nuevos usuarios
+- Sesiones JWT con NextAuth.js v5
+- Protección de rutas
+
+### 📱 Responsive Design
+- Mobile-first design
+- Menú hamburguesa en móvil
+- Tablas que se convierten en cards
+- Optimizado para tablets y desktop
+
+## 🚀 Inicio Rápido
 
 ### Prerrequisitos
 
