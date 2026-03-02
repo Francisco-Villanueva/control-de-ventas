@@ -39,3 +39,28 @@ export function useResumenAnual(fecha: string) {
     enabled: !!fecha,
   })
 }
+
+export function useEstadisticasHoy() {
+  return useQuery({
+    queryKey: ["estadisticas", "hoy"],
+    queryFn: async () => {
+      const response = await fetch("/api/estadisticas/hoy")
+      if (!response.ok) throw new Error("Error al cargar estadísticas de hoy")
+      return response.json()
+    },
+    staleTime: 1 * 60 * 1000, // 1 minuto - más fresco para el dashboard
+    refetchInterval: 5 * 60 * 1000, // Refetch cada 5 minutos
+  })
+}
+
+export function usePrediccionProduccion() {
+  return useQuery({
+    queryKey: ["estadisticas", "prediccion"],
+    queryFn: async () => {
+      const response = await fetch("/api/estadisticas/prediccion")
+      if (!response.ok) throw new Error("Error al cargar predicción")
+      return response.json()
+    },
+    staleTime: 30 * 60 * 1000, // 30 minutos - no cambia tan rápido
+  })
+}
