@@ -1,55 +1,61 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useCategorias, useEliminarCategoria } from "@/hooks/useCategorias"
-import { CategoriaForm } from "./CategoriaForm"
-import { toast } from "sonner"
-import { Loader2, Edit, Trash2, Plus, Package } from "lucide-react"
+import { useState } from "react";
+import { useCategorias, useEliminarCategoria } from "@/hooks/useCategorias";
+import { CategoriaForm } from "./CategoriaForm";
+import { toast } from "sonner";
+import { Loader2, Edit, Trash2, Plus, Package } from "lucide-react";
 
 export function CategoriasTable() {
-  const { data: categorias, isLoading } = useCategorias(false)
-  const eliminarCategoria = useEliminarCategoria()
+  const { data: categorias, isLoading } = useCategorias(false);
+  const eliminarCategoria = useEliminarCategoria();
 
-  const [categoriaEditar, setCategoriaEditar] = useState<any>(null)
-  const [mostrarFormulario, setMostrarFormulario] = useState(false)
+  const [categoriaEditar, setCategoriaEditar] = useState<any>(null);
+  const [mostrarFormulario, setMostrarFormulario] = useState(false);
 
-  const handleEliminar = async (id: number, nombre: string, cantidadProductos: number) => {
+  const handleEliminar = async (
+    id: number,
+    nombre: string,
+    cantidadProductos: number,
+  ) => {
     if (cantidadProductos > 0) {
-      toast.error(`No puedes eliminar "${nombre}" porque tiene ${cantidadProductos} productos asociados`)
-      return
+      toast.error(
+        `No puedes eliminar "${nombre}" porque tiene ${cantidadProductos} productos asociados`,
+      );
+      return;
     }
 
-    if (!confirm(`¿Estás seguro de eliminar la categoría "${nombre}"?`)) return
+    if (!confirm(`¿Estás seguro de eliminar la categoría "${nombre}"?`)) return;
 
     try {
-      await eliminarCategoria.mutateAsync(id)
-      toast.success("Categoría eliminada")
+      await eliminarCategoria.mutateAsync(id);
+      toast.success("Categoría eliminada");
     } catch (error: any) {
-      toast.error(error.message)
+      toast.error(error.message);
     }
-  }
+  };
 
   const handleEditar = (categoria: any) => {
-    setCategoriaEditar(categoria)
-    setMostrarFormulario(true)
-  }
+    setCategoriaEditar(categoria);
+    setMostrarFormulario(true);
+  };
 
   const handleNuevo = () => {
-    setCategoriaEditar(null)
-    setMostrarFormulario(true)
-  }
+    setCategoriaEditar(null);
+    setMostrarFormulario(true);
+  };
 
   const handleCerrarFormulario = () => {
-    setMostrarFormulario(false)
-    setCategoriaEditar(null)
-  }
+    setMostrarFormulario(false);
+    setCategoriaEditar(null);
+  };
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
         <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
       </div>
-    )
+    );
   }
 
   if (!categorias || categorias.length === 0) {
@@ -65,8 +71,15 @@ export function CategoriasTable() {
           <Plus className="h-5 w-5" />
           Crear Primera Categoría
         </button>
+        {mostrarFormulario && (
+          <CategoriaForm
+            categoria={categoriaEditar}
+            onClose={handleCerrarFormulario}
+            onSuccess={handleCerrarFormulario}
+          />
+        )}
       </div>
-    )
+    );
   }
 
   return (
@@ -159,7 +172,7 @@ export function CategoriasTable() {
                             handleEliminar(
                               categoria.id,
                               categoria.nombre,
-                              categoria._count?.productos || 0
+                              categoria._count?.productos || 0,
                             )
                           }
                           className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
@@ -222,7 +235,7 @@ export function CategoriasTable() {
                       handleEliminar(
                         categoria.id,
                         categoria.nombre,
-                        categoria._count?.productos || 0
+                        categoria._count?.productos || 0,
                       )
                     }
                     disabled={categoria._count?.productos > 0}
@@ -239,8 +252,9 @@ export function CategoriasTable() {
         {/* Info */}
         <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
           <p className="text-sm text-yellow-800 dark:text-yellow-200">
-            <strong>Nota:</strong> No puedes eliminar una categoría que tenga productos asociados.
-            Primero debes mover o eliminar los productos de esa categoría.
+            <strong>Nota:</strong> No puedes eliminar una categoría que tenga
+            productos asociados. Primero debes mover o eliminar los productos de
+            esa categoría.
           </p>
         </div>
       </div>
@@ -254,5 +268,5 @@ export function CategoriasTable() {
         />
       )}
     </>
-  )
+  );
 }
