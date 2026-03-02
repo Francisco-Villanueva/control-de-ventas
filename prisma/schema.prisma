@@ -1,0 +1,73 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Usuarios para autenticación
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  password  String // Hashed con bcrypt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Categorías de productos
+model Categoria {
+  id        Int        @id @default(autoincrement())
+  nombre    String     @unique
+  orden     Int        @default(0)
+  activo    Boolean    @default(true)
+  productos Producto[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+// Productos
+model Producto {
+  id          Int        @id @default(autoincrement())
+  nombre      String
+  categoriaId Int?
+  categoria   Categoria? @relation(fields: [categoriaId], references: [id])
+  precio      Decimal    @default(0) @db.Decimal(10, 2)
+  costo       Decimal    @default(0) @db.Decimal(10, 2)
+  activo      Boolean    @default(true)
+  orden       Int        @default(0)
+  ventas      Venta[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([categoriaId])
+  @@index([activo])
+}
+
+// Ventas diarias
+model Venta {
+  id         Int      @id @default(autoincrement())
+  fecha      DateTime @db.Date
+  productoId Int
+  producto   Producto @relation(fields: [productoId], references: [id], onDelete: Cascade)
+  cantidad   Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([fecha, productoId])
+  @@index([fecha])
+  @@index([productoId])
+}
+
+// Configuración general de la app
+model Configuracion {
+  id        Int      @id @default(autoincrement())
+  clave     String   @unique
+  valor     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
