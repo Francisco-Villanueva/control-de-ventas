@@ -155,7 +155,12 @@ rotiseria-ventas/
 │   ├── components/
 │   │   ├── ui/                # Componentes shadcn/ui
 │   │   ├── layout/            # Navbar, MobileNav
-│   │   └── auth/              # LoginForm, RegisterForm
+│   │   ├── auth/              # LoginForm, RegisterForm
+│   │   ├── dashboard/         # StatsCards, Widgets, Alertas
+│   │   ├── ventas/            # VentaDiariaForm, CalendarioSelector
+│   │   ├── estadisticas/      # PromediosTable, PromediosChart
+│   │   ├── productos/         # ProductoForm, ProductosTable
+│   │   └── categorias/        # CategoriaForm, CategoriasTable
 │   ├── lib/
 │   │   ├── prisma.ts          # Cliente Prisma
 │   │   ├── auth.ts            # Configuración NextAuth
@@ -196,18 +201,34 @@ npm run lint          # Ejecuta linter
 - **Gráficos**: Recharts
 - **Notificaciones**: Sonner
 
-## 📝 Próximos Pasos
+## 📝 Funcionalidades Pendientes (Opcionales)
 
-Para continuar con el desarrollo:
+La aplicación ya es completamente funcional para uso diario. Las siguientes características son opcionales para análisis avanzado:
 
-1. Implementar el Dashboard con widgets reales
-2. Crear el formulario de registro de ventas
-3. Implementar la página de promedios con gráficos
-4. Crear los reportes mensuales/anuales
-5. Completar el CRUD de productos y categorías
-6. Agregar sistema de alertas
-7. Optimizar para mobile
-8. Deploy a Vercel
+### Prioridad Media
+- [ ] **Reportes Avanzados** (Sprint 2)
+  - Gráficos mensuales y anuales detallados
+  - Análisis de tendencias
+  - Comparativo entre períodos
+  - Exportar a PDF/Excel
+
+### Prioridad Baja
+- [ ] **Alertas Expandidas**
+  - Productos sin movimiento en últimos 7 días
+  - Badge de notificaciones en navbar
+  - Sistema centralizado de alertas
+
+- [ ] **Testing y Polish Final**
+  - Tests automatizados (Jest + Playwright)
+  - Optimizaciones de performance
+  - Mejoras de accesibilidad
+
+### Mejoras Futuras
+- Sistema de múltiples usuarios con roles
+- PWA (Progressive Web App) para modo offline
+- Integración con WhatsApp para alertas
+- Backup automático de datos
+- Dashboard para múltiples sucursales
 
 ## 🐛 Solución de Problemas
 
@@ -232,6 +253,65 @@ Asegúrate de haber ejecutado primero:
 ```bash
 npx prisma db push
 ```
+
+## 📚 Documentación Adicional
+
+Para más información sobre el proyecto, consulta:
+
+- **[CLAUDE.md](./CLAUDE.md)** - Guía técnica completa para desarrollo
+- **[TAREAS_PENDIENTES.md](./TAREAS_PENDIENTES.md)** - Estado detallado de tareas
+- **[ESTADO_PROYECTO.md](./ESTADO_PROYECTO.md)** - Resumen ejecutivo del proyecto
+- **[CHANGELOG.md](./CHANGELOG.md)** - Historial de cambios versión por versión
+
+## 🎯 Uso Diario Recomendado
+
+### Flujo de Trabajo
+
+1. **Por la Mañana**
+   - Acceder al dashboard
+   - Revisar widget de "Sugerencia de Producción"
+   - Anotar cantidades a producir basadas en predicción
+
+2. **Durante el Día**
+   - Registrar ventas conforme ocurren
+   - Usar "Registro Rápido" en dashboard
+   - Revisar alertas si aparecen
+
+3. **Al Final del Día**
+   - Verificar que todas las ventas estén registradas
+   - Revisar métricas del día vs promedio
+   - Consultar sugerencia para mañana
+
+4. **Semanalmente**
+   - Ir a página "Promedios"
+   - Analizar tendencias por día de semana
+   - Ajustar producción según patrones identificados
+
+5. **Mensualmente**
+   - Actualizar productos si hay cambios de menú
+   - Revisar y ajustar precios/costos
+   - Mantener categorías organizadas
+
+## 🚀 Deployment a Producción
+
+### Vercel (Recomendado)
+
+1. Crear cuenta en [Vercel](https://vercel.com)
+2. Conectar repositorio de GitHub
+3. Configurar variables de entorno:
+   ```
+   DATABASE_URL=postgresql://...
+   NEXTAUTH_SECRET=...
+   NEXTAUTH_URL=https://tu-dominio.vercel.app
+   ```
+4. Deploy automático en cada push
+
+### Base de Datos en Producción
+
+Opciones recomendadas:
+- [Neon](https://neon.tech) - PostgreSQL serverless (gratis)
+- [Supabase](https://supabase.com) - PostgreSQL con dashboard (gratis)
+- [Railway](https://railway.app) - PostgreSQL managed
 
 ## 📄 Licencia
 
