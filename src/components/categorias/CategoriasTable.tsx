@@ -4,7 +4,9 @@ import { useState } from "react";
 import { useCategorias, useEliminarCategoria } from "@/hooks/useCategorias";
 import { CategoriaForm } from "./CategoriaForm";
 import { toast } from "sonner";
-import { Loader2, Edit, Trash2, Plus, Package } from "lucide-react";
+import { Loader2, Edit, Trash2, Plus, Package, FolderOpen } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 export function CategoriasTable() {
   const { data: categorias, isLoading } = useCategorias(false);
@@ -52,25 +54,31 @@ export function CategoriasTable() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center py-12">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+      <div className="flex items-center justify-center py-16">
+        <Loader2 className="h-10 w-10 animate-spin text-[#8B5FBF]" />
       </div>
     );
   }
 
   if (!categorias || categorias.length === 0) {
     return (
-      <div className="text-center py-12">
-        <p className="text-gray-600 dark:text-gray-400 mb-4">
+      <div className="text-center py-16 bg-white dark:bg-[#1A1A2E] rounded-2xl shadow-md border-2 border-[#E5E9F2] dark:border-[#2D2D44] p-8">
+        <div className="h-16 w-16 bg-gradient-to-br from-[#8B5FBF] to-[#A47FD5] rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+          <FolderOpen className="h-8 w-8 text-white" />
+        </div>
+        <p className="text-[#1A1A2E] dark:text-white font-semibold text-lg mb-2">
           No hay categorías registradas
         </p>
-        <button
+        <Button
           onClick={handleNuevo}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium"
+          variant="default"
+          size="lg"
+          className="mt-4 bg-[#8B5FBF] hover:bg-[#7A4EAE]"
         >
           <Plus className="h-5 w-5" />
           Crear Primera Categoría
-        </button>
+        </Button>
+
         {mostrarFormulario && (
           <CategoriaForm
             categoria={categoriaEditar}
@@ -84,85 +92,84 @@ export function CategoriasTable() {
 
   return (
     <>
-      <div className="space-y-4">
+      <div className="space-y-6">
         {/* Header con botón */}
         <div className="flex items-center justify-end">
-          <button
+          <Button
             onClick={handleNuevo}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium text-sm"
+            variant="default"
+            size="lg"
+            className="bg-[#8B5FBF] hover:bg-[#7A4EAE] shadow-md"
           >
-            <Plus className="h-4 w-4" />
+            <Plus className="h-5 w-5" />
             Nueva Categoría
-          </button>
+          </Button>
         </div>
 
         {/* Tabla Desktop */}
         <div className="hidden md:block overflow-x-auto">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-              <thead className="bg-gray-50 dark:bg-gray-700">
+          <div className="bg-white dark:bg-[#1A1A2E] rounded-2xl shadow-md border-2 border-[#E5E9F2] dark:border-[#2D2D44] overflow-hidden">
+            <table className="min-w-full divide-y-2 divide-[#E5E9F2] dark:divide-[#2D2D44]">
+              <thead className="bg-gradient-to-r from-[#8B5FBF]/10 to-transparent sticky top-0 z-10">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-left text-xs font-bold text-[#1A1A2E] dark:text-white uppercase tracking-wider">
                     Categoría
                   </th>
-                  <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-center text-xs font-bold text-[#1A1A2E] dark:text-white uppercase tracking-wider">
                     Productos
                   </th>
-                  <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-center text-xs font-bold text-[#1A1A2E] dark:text-white uppercase tracking-wider">
                     Orden
                   </th>
-                  <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-center text-xs font-bold text-[#1A1A2E] dark:text-white uppercase tracking-wider">
                     Estado
                   </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-right text-xs font-bold text-[#1A1A2E] dark:text-white uppercase tracking-wider">
                     Acciones
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+              <tbody className="bg-white dark:bg-[#1A1A2E] divide-y-2 divide-[#E5E9F2] dark:divide-[#2D2D44]">
                 {categorias.map((categoria: any) => (
                   <tr
                     key={categoria.id}
                     className={
                       categoria.activo
-                        ? "hover:bg-gray-50 dark:hover:bg-gray-700/50"
-                        : "bg-gray-100 dark:bg-gray-700/30 opacity-60"
+                        ? "hover:bg-[#F8F9FC] dark:hover:bg-[#252536] transition-colors"
+                        : "bg-[#F8F9FC]/50 dark:bg-[#252536]/50 opacity-60"
                     }
                   >
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900 dark:text-white">
+                      <div className="text-sm font-bold text-[#1A1A2E] dark:text-white">
                         {categoria.nombre}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-center">
                       <div className="flex items-center justify-center gap-2">
-                        <Package className="h-4 w-4 text-gray-400" />
-                        <span className="text-sm text-gray-900 dark:text-white">
+                        <Package className="h-4 w-4 text-[#6B7A94]" />
+                        <span className="text-sm font-semibold text-[#1A1A2E] dark:text-white">
                           {categoria._count?.productos || 0}
                         </span>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-center">
-                      <div className="text-sm text-gray-900 dark:text-white">
+                      <div className="text-sm font-semibold text-[#1A1A2E] dark:text-white font-mono">
                         {categoria.orden}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-center">
-                      <span
-                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                          categoria.activo
-                            ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
-                            : "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-400"
-                        }`}
+                      <Badge
+                        variant={categoria.activo ? "secondary" : "outline"}
+                        className="text-xs"
                       >
                         {categoria.activo ? "Activa" : "Inactiva"}
-                      </span>
+                      </Badge>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <div className="flex items-center justify-end gap-2">
                         <button
                           onClick={() => handleEditar(categoria)}
-                          className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
+                          className="p-2 rounded-lg text-[#8B5FBF] hover:bg-[#8B5FBF]/10 transition-all"
                           title="Editar"
                         >
                           <Edit className="h-4 w-4" />
@@ -175,7 +182,11 @@ export function CategoriasTable() {
                               categoria._count?.productos || 0,
                             )
                           }
-                          className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
+                          className={`p-2 rounded-lg transition-all ${
+                            categoria._count?.productos > 0
+                              ? "text-[#6B7A94] opacity-50 cursor-not-allowed"
+                              : "text-[#FF5757] hover:bg-[#FF5757]/10"
+                          }`}
                           title="Eliminar"
                           disabled={categoria._count?.productos > 0}
                         >
@@ -191,46 +202,44 @@ export function CategoriasTable() {
         </div>
 
         {/* Cards Mobile */}
-        <div className="md:hidden space-y-4">
+        <div className="md:hidden space-y-5">
           {categorias.map((categoria: any) => (
             <div
               key={categoria.id}
-              className={`rounded-lg shadow-sm border overflow-hidden ${
+              className={`rounded-2xl shadow-md border-2 overflow-hidden transition-all duration-300 ${
                 categoria.activo
-                  ? "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
-                  : "bg-gray-100 dark:bg-gray-700/30 border-gray-300 dark:border-gray-600 opacity-60"
+                  ? "bg-white dark:bg-[#1A1A2E] border-[#E5E9F2] dark:border-[#2D2D44]"
+                  : "bg-[#F8F9FC]/50 dark:bg-[#252536]/50 border-[#E5E9F2]/50 dark:border-[#2D2D44]/50 opacity-60"
               }`}
             >
-              <div className="p-4">
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <div className="p-5">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-xl font-bold text-[#1A1A2E] dark:text-white mb-2 truncate">
                       {categoria.nombre}
                     </h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1 mt-1">
+                    <div className="flex items-center gap-2 text-sm text-[#6B7A94] dark:text-[#8E92A0]">
                       <Package className="h-4 w-4" />
-                      {categoria._count?.productos || 0} productos
-                    </p>
+                      <span>{categoria._count?.productos || 0} productos</span>
+                    </div>
                   </div>
-                  <span
-                    className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                      categoria.activo
-                        ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
-                        : "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-400"
-                    }`}
+                  <Badge
+                    variant={categoria.activo ? "secondary" : "outline"}
+                    className="ml-2 flex-shrink-0"
                   >
                     {categoria.activo ? "Activa" : "Inactiva"}
-                  </span>
+                  </Badge>
                 </div>
 
-                <div className="flex gap-2">
-                  <button
+                <div className="flex gap-3">
+                  <Button
                     onClick={() => handleEditar(categoria)}
-                    className="flex-1 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium"
+                    className="flex-1 bg-[#8B5FBF] hover:bg-[#7A4EAE]"
                   >
+                    <Edit className="h-4 w-4" />
                     Editar
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     onClick={() =>
                       handleEliminar(
                         categoria.id,
@@ -239,10 +248,12 @@ export function CategoriasTable() {
                       )
                     }
                     disabled={categoria._count?.productos > 0}
-                    className="flex-1 px-3 py-2 border border-red-600 text-red-600 rounded-md hover:bg-red-50 dark:hover:bg-red-900/20 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                    variant="outline"
+                    className="flex-1 border-[#FF5757] text-[#FF5757] hover:bg-[#FF5757]/10 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
+                    <Trash2 className="h-4 w-4" />
                     Eliminar
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>
@@ -250,12 +261,17 @@ export function CategoriasTable() {
         </div>
 
         {/* Info */}
-        <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
-          <p className="text-sm text-yellow-800 dark:text-yellow-200">
-            <strong>Nota:</strong> No puedes eliminar una categoría que tenga
-            productos asociados. Primero debes mover o eliminar los productos de
-            esa categoría.
-          </p>
+        <div className="bg-gradient-to-br from-[#FFB627]/10 to-transparent border-2 border-[#FFB627]/30 rounded-2xl p-6">
+          <div className="flex items-start gap-4">
+            <div className="h-10 w-10 bg-gradient-to-br from-[#FFB627] to-[#FFC857] rounded-lg flex items-center justify-center shadow-md flex-shrink-0">
+              <span className="text-white font-bold text-lg">!</span>
+            </div>
+            <p className="text-sm text-[#424C63] dark:text-[#B8BCC8]">
+              <strong className="font-bold">Nota:</strong> No puedes eliminar una categoría que tenga
+              productos asociados. Primero debes mover o eliminar los productos de
+              esa categoría.
+            </p>
+          </div>
         </div>
       </div>
 

@@ -11,22 +11,26 @@ export default function PromediosPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-4xl font-bold text-gradient">
             Promedios por Día de Semana
           </h1>
-          <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+          <p className="mt-2 text-base text-[#6B7A94] dark:text-[#8E92A0]">
             Analiza tus ventas promedio para planificar mejor tu producción
           </p>
         </div>
-        <BarChart3 className="h-8 w-8 text-blue-600" />
+        <div className="h-16 w-16 bg-gradient-to-br from-[#8B5FBF] to-[#A47FD5] rounded-2xl flex items-center justify-center shadow-lg">
+          <BarChart3 className="h-8 w-8 text-white" />
+        </div>
       </div>
 
       {/* Info Card */}
-      <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-        <div className="flex items-start gap-3">
-          <Info className="h-5 w-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
-          <div className="text-sm text-blue-800 dark:text-blue-200">
-            <p className="font-medium mb-1">¿Cómo usar estos promedios?</p>
+      <div className="bg-gradient-to-br from-[#8B5FBF]/10 to-transparent border-2 border-[#8B5FBF]/20 rounded-2xl p-6">
+        <div className="flex items-start gap-4">
+          <div className="h-12 w-12 bg-gradient-to-br from-[#8B5FBF] to-[#A47FD5] rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
+            <Info className="h-6 w-6 text-white" />
+          </div>
+          <div className="text-sm text-[#424C63] dark:text-[#B8BCC8]">
+            <p className="font-bold text-base text-[#1A1A2E] dark:text-white mb-2">¿Cómo usar estos promedios?</p>
             <p>
               Los promedios te ayudan a predecir cuánto debes producir cada día. Por
               ejemplo, si el promedio del lunes es 50 empanadas de carne, considera
@@ -44,11 +48,11 @@ export default function PromediosPage() {
 
       {/* Tabla Detallada */}
       <div>
-        <div className="mb-4">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+        <div className="mb-6">
+          <h2 className="text-2xl font-bold text-[#1A1A2E] dark:text-white mb-2">
             Tabla Detallada
           </h2>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
+          <p className="text-sm text-[#6B7A94] dark:text-[#8E92A0]">
             Promedios de ventas por producto y día de la semana
           </p>
         </div>
@@ -56,11 +60,11 @@ export default function PromediosPage() {
       </div>
 
       {/* Nota al pie */}
-      <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
-        <p className="text-xs text-gray-600 dark:text-gray-400">
-          <strong>Nota:</strong> Los promedios se calculan basándose en todas las
+      <div className="bg-gradient-to-r from-[#8B5FBF]/5 to-transparent border-2 border-[#8B5FBF]/10 rounded-xl p-5">
+        <p className="text-sm text-[#424C63] dark:text-[#B8BCC8]">
+          <span className="font-bold text-[#8B5FBF]">Nota:</span> Los promedios se calculan basándose en todas las
           ventas históricas registradas. Cuantos más datos tengas, más precisos serán
-          los promedios. El día actual está resaltado en azul.
+          los promedios. El día actual está resaltado con lavender.
         </p>
       </div>
     </div>

@@ -8,7 +8,9 @@ import {
 } from "@/hooks/useProductos";
 import { ProductoForm } from "./ProductoForm";
 import { toast } from "sonner";
-import { Loader2, Edit, Trash2, Eye, EyeOff, Plus } from "lucide-react";
+import { Loader2, Edit, Trash2, Eye, EyeOff, Plus, Package } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 export function ProductosTable() {
   const [mostrarInactivos, setMostrarInactivos] = useState(false);
@@ -61,28 +63,33 @@ export function ProductosTable() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center py-12">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+      <div className="flex items-center justify-center py-16">
+        <Loader2 className="h-10 w-10 animate-spin text-[#00C9A7]" />
       </div>
     );
   }
 
   if (!productos || productos.length === 0) {
     return (
-      <div className="text-center py-12">
-        <p className="text-gray-600 dark:text-gray-400 mb-4">
+      <div className="text-center py-16 bg-white dark:bg-[#1A1A2E] rounded-2xl shadow-md border-2 border-[#E5E9F2] dark:border-[#2D2D44] p-8">
+        <div className="h-16 w-16 bg-gradient-to-br from-[#00C9A7] to-[#00DBB7] rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+          <Package className="h-8 w-8 text-white" />
+        </div>
+        <p className="text-[#1A1A2E] dark:text-white font-semibold text-lg mb-2">
           {mostrarInactivos
             ? "No hay productos inactivos"
             : "No hay productos registrados"}
         </p>
         {!mostrarInactivos && (
-          <button
+          <Button
             onClick={handleNuevo}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium"
+            variant="default"
+            size="lg"
+            className="mt-4 bg-[#00C9A7] hover:bg-[#00B396]"
           >
             <Plus className="h-5 w-5" />
             Crear Primer Producto
-          </button>
+          </Button>
         )}
 
         {mostrarFormulario && (
@@ -98,54 +105,68 @@ export function ProductosTable() {
 
   return (
     <>
-      <div className="space-y-4">
+      <div className="space-y-6">
         {/* Header con botones */}
         <div className="flex items-center justify-between">
-          <button
+          <Button
             onClick={() => setMostrarInactivos(!mostrarInactivos)}
-            className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+            variant="outline"
+            size="sm"
+            className="border-2 border-[#00C9A7]/30 text-[#00C9A7] hover:bg-[#00C9A7]/10"
           >
-            {mostrarInactivos ? "Ocultar inactivos" : "Mostrar inactivos"}
-          </button>
-          <button
+            {mostrarInactivos ? (
+              <>
+                <EyeOff className="h-4 w-4" />
+                Ocultar inactivos
+              </>
+            ) : (
+              <>
+                <Eye className="h-4 w-4" />
+                Mostrar inactivos
+              </>
+            )}
+          </Button>
+          <Button
             onClick={handleNuevo}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium text-sm"
+            variant="default"
+            size="lg"
+            className="bg-[#00C9A7] hover:bg-[#00B396] shadow-md"
           >
-            <Plus className="h-4 w-4" />
+            <Plus className="h-5 w-5" />
             Nuevo Producto
-          </button>
+          </Button>
         </div>
 
         {/* Tabla Desktop */}
         <div className="hidden md:block overflow-x-auto">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-              <thead className="bg-gray-50 dark:bg-gray-700">
+          <div className="bg-white dark:bg-[#1A1A2E] rounded-2xl shadow-md border-2 border-[#E5E9F2] dark:border-[#2D2D44] overflow-hidden">
+            <table className="min-w-full divide-y-2 divide-[#E5E9F2] dark:divide-[#2D2D44]">
+              <thead className="bg-gradient-to-r from-[#00C9A7]/10 to-transparent sticky top-0 z-10">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-left text-xs font-bold text-[#1A1A2E] dark:text-white uppercase tracking-wider">
                     Producto
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-left text-xs font-bold text-[#1A1A2E] dark:text-white uppercase tracking-wider">
                     Categoría
                   </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-right text-xs font-bold text-[#1A1A2E] dark:text-white uppercase tracking-wider">
                     Precio
                   </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-right text-xs font-bold text-[#1A1A2E] dark:text-white uppercase tracking-wider">
                     Costo
                   </th>
-                  <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-center text-xs font-bold text-[#1A1A2E] dark:text-white uppercase tracking-wider">
                     Margen
                   </th>
-                  <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-center text-xs font-bold text-[#1A1A2E] dark:text-white uppercase tracking-wider">
                     Estado
                   </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-right text-xs font-bold text-[#1A1A2E] dark:text-white uppercase tracking-wider">
                     Acciones
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+              <tbody className="bg-white dark:bg-[#1A1A2E] divide-y-2 divide-[#E5E9F2] dark:divide-[#2D2D44]">
                 {productos.map((producto: any) => {
                   const margen =
                     producto.precio > 0
@@ -158,59 +179,55 @@ export function ProductosTable() {
                       key={producto.id}
                       className={
                         producto.activo
-                          ? "hover:bg-gray-50 dark:hover:bg-gray-700/50"
-                          : "bg-gray-100 dark:bg-gray-700/30 opacity-60"
+                          ? "hover:bg-[#F8F9FC] dark:hover:bg-[#252536] transition-colors"
+                          : "bg-[#F8F9FC]/50 dark:bg-[#252536]/50 opacity-60"
                       }
                     >
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-900 dark:text-white">
+                        <div className="text-sm font-bold text-[#1A1A2E] dark:text-white">
                           {producto.nombre}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-500 dark:text-gray-400">
-                          {producto.categoria?.nombre || "-"}
-                        </div>
+                        {producto.categoria?.nombre ? (
+                          <Badge variant="outline" className="text-xs">
+                            {producto.categoria.nombre}
+                          </Badge>
+                        ) : (
+                          <span className="text-sm text-[#6B7A94] dark:text-[#8E92A0]">-</span>
+                        )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right">
-                        <div className="text-sm text-gray-900 dark:text-white">
+                        <div className="text-sm font-semibold text-[#1A1A2E] dark:text-white font-mono">
                           ${Number(producto.precio).toFixed(2)}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right">
-                        <div className="text-sm text-gray-900 dark:text-white">
+                        <div className="text-sm font-semibold text-[#1A1A2E] dark:text-white font-mono">
                           ${Number(producto.costo).toFixed(2)}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-center">
-                        <span
-                          className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                            margen >= 50
-                              ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
-                              : margen >= 30
-                                ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400"
-                                : "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400"
-                          }`}
+                        <Badge
+                          variant={margen >= 50 ? "success" : margen >= 30 ? "warning" : "destructive"}
+                          className="text-xs"
                         >
                           {margen.toFixed(0)}%
-                        </span>
+                        </Badge>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-center">
-                        <span
-                          className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                            producto.activo
-                              ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
-                              : "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-400"
-                          }`}
+                        <Badge
+                          variant={producto.activo ? "secondary" : "outline"}
+                          className="text-xs"
                         >
                           {producto.activo ? "Activo" : "Inactivo"}
-                        </span>
+                        </Badge>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <div className="flex items-center justify-end gap-2">
                           <button
                             onClick={() => handleToggleActivo(producto)}
-                            className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                            className="p-2 rounded-lg text-[#6B7A94] hover:bg-[#00C9A7]/10 hover:text-[#00C9A7] transition-all"
                             title={producto.activo ? "Desactivar" : "Activar"}
                           >
                             {producto.activo ? (
@@ -221,7 +238,7 @@ export function ProductosTable() {
                           </button>
                           <button
                             onClick={() => handleEditar(producto)}
-                            className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
+                            className="p-2 rounded-lg text-[#00C9A7] hover:bg-[#00C9A7]/10 transition-all"
                             title="Editar"
                           >
                             <Edit className="h-4 w-4" />
@@ -237,7 +254,7 @@ export function ProductosTable() {
         </div>
 
         {/* Cards Mobile */}
-        <div className="md:hidden space-y-4">
+        <div className="md:hidden space-y-5">
           {productos.map((producto: any) => {
             const margen =
               producto.precio > 0
@@ -247,73 +264,88 @@ export function ProductosTable() {
             return (
               <div
                 key={producto.id}
-                className={`rounded-lg shadow-sm border overflow-hidden ${
+                className={`rounded-2xl shadow-md border-2 overflow-hidden transition-all duration-300 ${
                   producto.activo
-                    ? "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
-                    : "bg-gray-100 dark:bg-gray-700/30 border-gray-300 dark:border-gray-600 opacity-60"
+                    ? "bg-white dark:bg-[#1A1A2E] border-[#E5E9F2] dark:border-[#2D2D44]"
+                    : "bg-[#F8F9FC]/50 dark:bg-[#252536]/50 border-[#E5E9F2]/50 dark:border-[#2D2D44]/50 opacity-60"
                 }`}
               >
-                <div className="p-4">
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                <div className="p-5">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-xl font-bold text-[#1A1A2E] dark:text-white mb-1 truncate">
                         {producto.nombre}
                       </h3>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">
-                        {producto.categoria?.nombre || "Sin categoría"}
-                      </p>
+                      {producto.categoria?.nombre ? (
+                        <Badge variant="outline" className="text-xs">
+                          {producto.categoria.nombre}
+                        </Badge>
+                      ) : (
+                        <span className="text-sm text-[#6B7A94] dark:text-[#8E92A0]">
+                          Sin categoría
+                        </span>
+                      )}
                     </div>
-                    <span
-                      className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                        producto.activo
-                          ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
-                          : "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-400"
-                      }`}
+                    <Badge
+                      variant={producto.activo ? "secondary" : "outline"}
+                      className="ml-2 flex-shrink-0"
                     >
                       {producto.activo ? "Activo" : "Inactivo"}
-                    </span>
+                    </Badge>
                   </div>
 
-                  <div className="grid grid-cols-3 gap-4 mb-3">
-                    <div>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                  <div className="grid grid-cols-3 gap-3 mb-4">
+                    <div className="bg-gradient-to-br from-[#00C9A7]/5 to-transparent rounded-lg p-3 border border-[#00C9A7]/20">
+                      <p className="text-xs font-semibold uppercase tracking-wider text-[#6B7A94] dark:text-[#8E92A0] mb-1">
                         Precio
                       </p>
-                      <p className="text-sm font-semibold text-gray-900 dark:text-white">
+                      <p className="text-base font-bold text-[#1A1A2E] dark:text-white font-mono">
                         ${Number(producto.precio).toFixed(2)}
                       </p>
                     </div>
-                    <div>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                    <div className="bg-gradient-to-br from-[#FF6B35]/5 to-transparent rounded-lg p-3 border border-[#FF6B35]/20">
+                      <p className="text-xs font-semibold uppercase tracking-wider text-[#6B7A94] dark:text-[#8E92A0] mb-1">
                         Costo
                       </p>
-                      <p className="text-sm font-semibold text-gray-900 dark:text-white">
+                      <p className="text-base font-bold text-[#1A1A2E] dark:text-white font-mono">
                         ${Number(producto.costo).toFixed(2)}
                       </p>
                     </div>
-                    <div>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                    <div className="bg-gradient-to-br from-[#8B5FBF]/5 to-transparent rounded-lg p-3 border border-[#8B5FBF]/20">
+                      <p className="text-xs font-semibold uppercase tracking-wider text-[#6B7A94] dark:text-[#8E92A0] mb-1">
                         Margen
                       </p>
-                      <p className="text-sm font-semibold text-gray-900 dark:text-white">
+                      <p className="text-base font-bold text-[#1A1A2E] dark:text-white">
                         {margen.toFixed(0)}%
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex gap-2">
-                    <button
+                  <div className="flex gap-3">
+                    <Button
                       onClick={() => handleToggleActivo(producto)}
-                      className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 text-sm font-medium"
+                      variant="outline"
+                      className="flex-1"
                     >
-                      {producto.activo ? "Desactivar" : "Activar"}
-                    </button>
-                    <button
+                      {producto.activo ? (
+                        <>
+                          <EyeOff className="h-4 w-4" />
+                          Desactivar
+                        </>
+                      ) : (
+                        <>
+                          <Eye className="h-4 w-4" />
+                          Activar
+                        </>
+                      )}
+                    </Button>
+                    <Button
                       onClick={() => handleEditar(producto)}
-                      className="flex-1 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium"
+                      className="flex-1 bg-[#00C9A7] hover:bg-[#00B396]"
                     >
+                      <Edit className="h-4 w-4" />
                       Editar
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>

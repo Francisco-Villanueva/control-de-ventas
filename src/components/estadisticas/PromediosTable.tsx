@@ -2,26 +2,29 @@
 
 import { usePromediosPorDiaSemana } from "@/hooks/useEstadisticas"
 import { Loader2, TrendingUp, Calendar } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
 
 export function PromediosTable() {
   const { data: promedios, isLoading } = usePromediosPorDiaSemana()
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center py-12">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+      <div className="flex items-center justify-center py-16">
+        <Loader2 className="h-10 w-10 animate-spin text-[#8B5FBF]" />
       </div>
     )
   }
 
   if (!promedios || promedios.length === 0) {
     return (
-      <div className="text-center py-12">
-        <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-3" />
-        <p className="text-gray-600 dark:text-gray-400">
-          No hay suficientes datos para calcular promedios
+      <div className="text-center py-16 bg-white dark:bg-[#1A1A2E] rounded-2xl shadow-md border-2 border-[#E5E9F2] dark:border-[#2D2D44] p-8">
+        <div className="h-16 w-16 bg-gradient-to-br from-[#8B5FBF] to-[#A47FD5] rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+          <Calendar className="h-8 w-8 text-white" />
+        </div>
+        <p className="text-[#1A1A2E] dark:text-white font-semibold text-lg mb-2">
+          No hay suficientes datos
         </p>
-        <p className="text-sm text-gray-500 dark:text-gray-500 mt-2">
+        <p className="text-sm text-[#6B7A94] dark:text-[#8E92A0]">
           Registra ventas durante varios días para ver los promedios por día de la semana
         </p>
       </div>
@@ -69,39 +72,39 @@ export function PromediosTable() {
   return (
     <div className="space-y-4">
       {/* Indicador del día con mayor venta */}
-      <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
-        <div className="flex items-center gap-2">
-          <TrendingUp className="h-5 w-5 text-green-600 dark:text-green-400" />
-          <p className="text-sm text-green-800 dark:text-green-200">
-            <strong>{diaMayorVenta.diaNombre}</strong> es tu día de mayor venta
-            promedio con <strong>{Math.round(diaMayorVenta.total)}</strong> unidades
-          </p>
+      <div className="bg-gradient-to-r from-[#10D47C]/10 to-transparent border-2 border-[#10D47C]/20 rounded-xl p-5 flex items-center gap-4">
+        <div className="h-12 w-12 bg-gradient-to-br from-[#10D47C] to-[#2BE592] rounded-full flex items-center justify-center shadow-md flex-shrink-0">
+          <TrendingUp className="h-6 w-6 text-white" />
         </div>
+        <p className="text-sm text-[#424C63] dark:text-[#B8BCC8]">
+          <strong className="text-[#10D47C] text-base">{diaMayorVenta.diaNombre}</strong> es tu día de mayor venta
+          promedio con <strong className="text-[#10D47C] text-base">{Math.round(diaMayorVenta.total)}</strong> unidades
+        </p>
       </div>
 
       {/* Tabla Desktop */}
       <div className="hidden lg:block overflow-x-auto">
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-            <thead className="bg-gray-50 dark:bg-gray-700">
+        <div className="bg-white dark:bg-[#1A1A2E] rounded-2xl shadow-md border-2 border-[#E5E9F2] dark:border-[#2D2D44] overflow-hidden">
+          <table className="min-w-full divide-y-2 divide-[#E5E9F2] dark:divide-[#2D2D44]">
+            <thead className="bg-gradient-to-r from-[#8B5FBF]/10 to-transparent sticky top-0 z-20">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider sticky left-0 bg-gray-50 dark:bg-gray-700 z-10">
+                <th className="px-6 py-4 text-left text-xs font-bold text-[#1A1A2E] dark:text-white uppercase tracking-wider sticky left-0 bg-gradient-to-r from-[#8B5FBF]/10 to-transparent z-10">
                   Día
                 </th>
                 {productosArray.map((producto) => (
                   <th
                     key={producto}
-                    className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                    className="px-6 py-4 text-center text-xs font-bold text-[#1A1A2E] dark:text-white uppercase tracking-wider"
                   >
                     {producto}
                   </th>
                 ))}
-                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider bg-blue-50 dark:bg-blue-900/30">
+                <th className="px-6 py-4 text-center text-xs font-bold text-[#8B5FBF] uppercase tracking-wider bg-[#8B5FBF]/10">
                   Total
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+            <tbody className="bg-white dark:bg-[#1A1A2E] divide-y-2 divide-[#E5E9F2] dark:divide-[#2D2D44]">
               {totalesPorDia.map((dia: any) => {
                 const esHoy = dia.diaSemana === diaActual
                 return (
@@ -109,17 +112,19 @@ export function PromediosTable() {
                     key={dia.diaSemana}
                     className={
                       esHoy
-                        ? "bg-blue-50 dark:bg-blue-900/20 font-semibold"
-                        : "hover:bg-gray-50 dark:hover:bg-gray-700/50"
+                        ? "bg-gradient-to-r from-[#8B5FBF]/10 to-transparent font-semibold shadow-[inset_0_0_0_2px_rgba(139,95,191,0.2)]"
+                        : "hover:bg-[#F8F9FC] dark:hover:bg-[#252536] transition-colors"
                     }
                   >
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white sticky left-0 bg-inherit z-10">
-                      <div className="flex items-center gap-2">
-                        {dia.diaNombre}
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-[#1A1A2E] dark:text-white sticky left-0 bg-inherit z-10">
+                      <div className="flex items-center gap-3">
+                        <span className={esHoy ? "text-[#8B5FBF] font-bold text-base" : ""}>
+                          {dia.diaNombre}
+                        </span>
                         {esHoy && (
-                          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
+                          <Badge variant="default" className="bg-[#8B5FBF] text-xs">
                             Hoy
-                          </span>
+                          </Badge>
                         )}
                       </div>
                     </td>
@@ -130,32 +135,32 @@ export function PromediosTable() {
                       return (
                         <td
                           key={producto}
-                          className="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-900 dark:text-white"
+                          className="px-6 py-4 whitespace-nowrap text-sm text-center text-[#1A1A2E] dark:text-white font-mono"
                         >
                           {prod ? Math.round(prod.promedio) : "-"}
                         </td>
                       )
                     })}
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-center font-semibold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30">
+                    <td className="px-6 py-4 whitespace-nowrap text-base text-center font-bold text-[#8B5FBF] bg-[#8B5FBF]/10">
                       {Math.round(dia.total)}
                     </td>
                   </tr>
                 )
               })}
               {/* Fila de totales */}
-              <tr className="bg-gray-100 dark:bg-gray-700 font-semibold">
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white sticky left-0 bg-gray-100 dark:bg-gray-700 z-10">
+              <tr className="bg-gradient-to-r from-[#8B5FBF]/20 to-transparent font-bold">
+                <td className="px-6 py-5 whitespace-nowrap text-sm text-[#1A1A2E] dark:text-white sticky left-0 bg-gradient-to-r from-[#8B5FBF]/20 to-transparent z-10">
                   Promedio Semanal
                 </td>
                 {productosArray.map((producto) => (
                   <td
                     key={producto}
-                    className="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-900 dark:text-white"
+                    className="px-6 py-5 whitespace-nowrap text-sm text-center text-[#1A1A2E] dark:text-white font-mono"
                   >
                     {Math.round(totalesPorProducto[producto] / 7)}
                   </td>
                 ))}
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-center font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/40">
+                <td className="px-6 py-5 whitespace-nowrap text-lg text-center font-bold text-[#8B5FBF] bg-[#8B5FBF]/20">
                   {Math.round(
                     totalesPorDia.reduce((sum: number, dia: any) => sum + dia.total, 0) / 7
                   )}
@@ -167,49 +172,49 @@ export function PromediosTable() {
       </div>
 
       {/* Cards Mobile */}
-      <div className="lg:hidden space-y-4">
+      <div className="lg:hidden space-y-5">
         {totalesPorDia.map((dia: any) => {
           const esHoy = dia.diaSemana === diaActual
           return (
             <div
               key={dia.diaSemana}
-              className={`rounded-lg shadow-sm border overflow-hidden ${
+              className={`rounded-2xl shadow-md border-2 overflow-hidden transition-all duration-300 ${
                 esHoy
-                  ? "bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800"
-                  : "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
+                  ? "bg-gradient-to-br from-[#8B5FBF]/10 to-transparent border-[#8B5FBF]/40 shadow-lg"
+                  : "bg-white dark:bg-[#1A1A2E] border-[#E5E9F2] dark:border-[#2D2D44]"
               }`}
             >
               <div
-                className={`px-4 py-3 border-b flex items-center justify-between ${
+                className={`px-5 py-4 border-b-2 flex items-center justify-between ${
                   esHoy
-                    ? "bg-blue-100 dark:bg-blue-900/30 border-blue-200 dark:border-blue-800"
-                    : "bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-700"
+                    ? "bg-gradient-to-r from-[#8B5FBF]/20 to-transparent border-[#8B5FBF]/20"
+                    : "bg-gradient-to-r from-[#F8F9FC] to-transparent dark:from-[#252536] dark:to-transparent border-[#E5E9F2] dark:border-[#2D2D44]"
                 }`}
               >
-                <div className="flex items-center gap-2">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                <div className="flex items-center gap-3">
+                  <h3 className={`text-xl font-bold ${esHoy ? "text-[#8B5FBF]" : "text-[#1A1A2E] dark:text-white"}`}>
                     {dia.diaNombre}
                   </h3>
                   {esHoy && (
-                    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
+                    <Badge variant="default" className="bg-[#8B5FBF]">
                       Hoy
-                    </span>
+                    </Badge>
                   )}
                 </div>
-                <p className="text-xl font-bold text-blue-600 dark:text-blue-400">
+                <p className="text-2xl font-bold text-[#8B5FBF]">
                   {Math.round(dia.total)}
                 </p>
               </div>
-              <div className="p-4 space-y-2">
+              <div className="p-5 space-y-3">
                 {dia.productos.map((prod: any) => (
                   <div
                     key={prod.productoId}
-                    className="flex items-center justify-between py-2"
+                    className="flex items-center justify-between py-3 px-4 rounded-lg bg-gradient-to-r from-[#F8F9FC] to-transparent dark:from-[#252536] dark:to-transparent border border-[#E5E9F2] dark:border-[#2D2D44]"
                   >
-                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                    <span className="text-sm font-semibold text-[#424C63] dark:text-[#B8BCC8]">
                       {prod.productoNombre}
                     </span>
-                    <span className="text-sm font-semibold text-gray-900 dark:text-white">
+                    <span className="text-lg font-bold text-[#1A1A2E] dark:text-white font-mono">
                       {Math.round(prod.promedio)}
                     </span>
                   </div>

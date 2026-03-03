@@ -5,7 +5,10 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { useCrearCategoria, useActualizarCategoria } from "@/hooks/useCategorias"
 import { toast } from "sonner"
-import { X, Save, Loader2 } from "lucide-react"
+import { X, Save, Loader2, FolderOpen } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Badge } from "@/components/ui/badge"
 
 const categoriaSchema = z.object({
   nombre: z.string().min(1, "El nombre es requerido"),
@@ -59,40 +62,46 @@ export function CategoriaForm({ categoria, onClose, onSuccess }: CategoriaFormPr
   const isPending = crearCategoria.isPending || actualizarCategoria.isPending
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-in fade-in duration-200">
+      <div className="bg-white dark:bg-[#1A1A2E] rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto border-2 border-[#E5E9F2] dark:border-[#2D2D44] custom-scrollbar">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-            {isEditing ? "Editar Categoría" : "Nueva Categoría"}
-          </h2>
+        <div className="flex items-center justify-between p-6 border-b-2 border-[#E5E9F2] dark:border-[#2D2D44] bg-gradient-to-r from-[#8B5FBF]/5 to-transparent sticky top-0 z-10">
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 bg-gradient-to-br from-[#8B5FBF] to-[#A47FD5] rounded-xl flex items-center justify-center shadow-md">
+              <FolderOpen className="h-5 w-5 text-white" />
+            </div>
+            <h2 className="text-2xl font-bold text-[#1A1A2E] dark:text-white">
+              {isEditing ? "Editar Categoría" : "Nueva Categoría"}
+            </h2>
+          </div>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+            className="p-2 rounded-lg text-[#6B7A94] hover:bg-[#F8F9FC] dark:hover:bg-[#252536] transition-colors"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-5">
           {/* Nombre */}
           <div>
             <label
               htmlFor="nombre"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+              className="block text-sm font-bold text-[#1A1A2E] dark:text-white mb-2"
             >
               Nombre de la Categoría *
             </label>
-            <input
+            <Input
               {...register("nombre")}
               type="text"
               id="nombre"
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
               placeholder="Ej: Empanadas"
             />
             {errors.nombre && (
-              <p className="mt-1 text-sm text-red-600">{errors.nombre.message}</p>
+              <Badge variant="destructive" className="mt-2 text-xs">
+                {errors.nombre.message}
+              </Badge>
             )}
           </div>
 
@@ -100,48 +109,51 @@ export function CategoriaForm({ categoria, onClose, onSuccess }: CategoriaFormPr
           <div>
             <label
               htmlFor="orden"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+              className="block text-sm font-bold text-[#1A1A2E] dark:text-white mb-2"
             >
               Orden de visualización
             </label>
-            <input
+            <Input
               {...register("orden", { valueAsNumber: true })}
               type="number"
               id="orden"
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+              className="font-mono"
               placeholder="0"
             />
-            <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+            <p className="mt-2 text-xs text-[#6B7A94] dark:text-[#8E92A0]">
               Las categorías se ordenan de menor a mayor
             </p>
           </div>
 
           {/* Buttons */}
-          <div className="flex gap-3 pt-4">
-            <button
+          <div className="flex gap-3 pt-6">
+            <Button
               type="button"
               onClick={onClose}
-              className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 font-medium transition-colors"
+              variant="outline"
+              size="lg"
+              className="flex-1"
             >
               Cancelar
-            </button>
-            <button
+            </Button>
+            <Button
               type="submit"
               disabled={isPending}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white rounded-md font-medium transition-colors"
+              size="lg"
+              className="flex-1 bg-gradient-to-r from-[#8B5FBF] to-[#A47FD5] hover:from-[#7A4EAE] hover:to-[#8B5FBF] shadow-lg"
             >
               {isPending ? (
                 <>
-                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <Loader2 className="h-5 w-5 animate-spin" />
                   Guardando...
                 </>
               ) : (
                 <>
-                  <Save className="h-4 w-4" />
+                  <Save className="h-5 w-5" />
                   {isEditing ? "Actualizar" : "Crear"}
                 </>
               )}
-            </button>
+            </Button>
           </div>
         </form>
       </div>

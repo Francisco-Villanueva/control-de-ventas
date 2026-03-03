@@ -6,6 +6,10 @@ import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import Link from "next/link"
+import { Mail, Lock, User, ChefHat, Loader2 } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Badge } from "@/components/ui/badge"
 
 const registerSchema = z.object({
   name: z.string().min(2, "El nombre debe tener al menos 2 caracteres"),
@@ -67,109 +71,164 @@ export function RegisterForm() {
   }
 
   return (
-    <div className="w-full max-w-md mx-auto">
-      <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg px-8 pt-6 pb-8 mb-4">
-        <h2 className="text-2xl font-bold mb-6 text-center text-gray-900 dark:text-white">
-          Crear Cuenta
-        </h2>
+    <div className="w-full max-w-lg mx-auto">
+      <div className="bg-white dark:bg-[#1A1A2E] shadow-2xl border-2 border-[#FF6B35]/10 rounded-2xl px-8 py-10 transition-all duration-300 hover:shadow-[0_20px_50px_rgba(255,107,53,0.15)]">
+        {/* Logo/Icon */}
+        <div className="flex justify-center mb-6">
+          <div className="w-16 h-16 bg-gradient-to-br from-[#FF6B35] to-[#FF8C61] rounded-2xl flex items-center justify-center shadow-lg">
+            <ChefHat className="w-8 h-8 text-white" />
+          </div>
+        </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        {/* Title */}
+        <h1 className="text-3xl font-bold mb-2 text-center text-gradient">
+          Crear Cuenta
+        </h1>
+        <p className="text-center text-[#6B7A94] dark:text-[#8E92A0] mb-8">
+          Regístrate para comenzar a gestionar tu rotisería
+        </p>
+
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          {/* Name Field */}
           <div>
             <label
               htmlFor="name"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+              className="block text-sm font-semibold text-[#424C63] dark:text-[#B8BCC8] mb-2"
             >
               Nombre
             </label>
-            <input
-              {...register("name")}
-              type="text"
-              id="name"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-              placeholder="Tu nombre"
-            />
+            <div className="relative">
+              <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6B7A94]">
+                <User className="w-5 h-5" />
+              </div>
+              <Input
+                {...register("name")}
+                type="text"
+                id="name"
+                className="pl-12"
+                placeholder="Tu nombre"
+              />
+            </div>
             {errors.name && (
-              <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
+              <Badge variant="destructive" className="mt-2">
+                {errors.name.message}
+              </Badge>
             )}
           </div>
 
+          {/* Email Field */}
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+              className="block text-sm font-semibold text-[#424C63] dark:text-[#B8BCC8] mb-2"
             >
               Email
             </label>
-            <input
-              {...register("email")}
-              type="email"
-              id="email"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-              placeholder="tu@email.com"
-            />
+            <div className="relative">
+              <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6B7A94]">
+                <Mail className="w-5 h-5" />
+              </div>
+              <Input
+                {...register("email")}
+                type="email"
+                id="email"
+                className="pl-12"
+                placeholder="tu@email.com"
+              />
+            </div>
             {errors.email && (
-              <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
+              <Badge variant="destructive" className="mt-2">
+                {errors.email.message}
+              </Badge>
             )}
           </div>
 
+          {/* Password Field */}
           <div>
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+              className="block text-sm font-semibold text-[#424C63] dark:text-[#B8BCC8] mb-2"
             >
               Contraseña
             </label>
-            <input
-              {...register("password")}
-              type="password"
-              id="password"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-              placeholder="••••••••"
-            />
+            <div className="relative">
+              <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6B7A94]">
+                <Lock className="w-5 h-5" />
+              </div>
+              <Input
+                {...register("password")}
+                type="password"
+                id="password"
+                className="pl-12"
+                placeholder="••••••••"
+              />
+            </div>
             {errors.password && (
-              <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
+              <Badge variant="destructive" className="mt-2">
+                {errors.password.message}
+              </Badge>
             )}
           </div>
 
+          {/* Confirm Password Field */}
           <div>
             <label
               htmlFor="confirmPassword"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+              className="block text-sm font-semibold text-[#424C63] dark:text-[#B8BCC8] mb-2"
             >
               Confirmar Contraseña
             </label>
-            <input
-              {...register("confirmPassword")}
-              type="password"
-              id="confirmPassword"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-              placeholder="••••••••"
-            />
+            <div className="relative">
+              <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6B7A94]">
+                <Lock className="w-5 h-5" />
+              </div>
+              <Input
+                {...register("confirmPassword")}
+                type="password"
+                id="confirmPassword"
+                className="pl-12"
+                placeholder="••••••••"
+              />
+            </div>
             {errors.confirmPassword && (
-              <p className="mt-1 text-sm text-red-600">{errors.confirmPassword.message}</p>
+              <Badge variant="destructive" className="mt-2">
+                {errors.confirmPassword.message}
+              </Badge>
             )}
           </div>
 
+          {/* Error Message */}
           {error && (
-            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded">
-              {error}
+            <div className="bg-[#FF5757]/10 border-2 border-[#FF5757]/20 text-[#FF5757] px-4 py-3 rounded-lg flex items-center gap-2">
+              <span className="font-medium">{error}</span>
             </div>
           )}
 
-          <button
+          {/* Submit Button */}
+          <Button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium py-2 px-4 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            variant="gradient"
+            size="lg"
+            className="w-full"
           >
-            {loading ? "Creando cuenta..." : "Crear Cuenta"}
-          </button>
+            {loading ? (
+              <>
+                <Loader2 className="w-5 h-5 animate-spin" />
+                Creando cuenta...
+              </>
+            ) : (
+              "Crear Cuenta"
+            )}
+          </Button>
         </form>
 
-        <p className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
+        {/* Login Link */}
+        <p className="mt-6 text-center text-sm text-[#6B7A94] dark:text-[#8E92A0]">
           ¿Ya tienes una cuenta?{" "}
           <Link
             href="/login"
-            className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium"
+            className="text-[#FF6B35] hover:text-[#E85A2A] font-semibold link-underline transition-colors"
           >
             Inicia sesión aquí
           </Link>

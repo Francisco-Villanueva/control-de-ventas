@@ -10,31 +10,33 @@ export default function ProductosPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-4xl font-bold text-gradient">
             Gestión de Productos
           </h1>
-          <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+          <p className="mt-2 text-base text-[#6B7A94] dark:text-[#8E92A0]">
             Administra tus productos, precios y costos
           </p>
         </div>
-        <Package className="h-8 w-8 text-blue-600" />
+        <div className="h-16 w-16 bg-gradient-to-br from-[#00C9A7] to-[#00DBB7] rounded-2xl flex items-center justify-center shadow-lg">
+          <Package className="h-8 w-8 text-white" />
+        </div>
       </div>
 
       {/* Info Card */}
-      <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-        <div className="flex items-start gap-3">
-          <Info className="h-5 w-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
-          <div className="text-sm text-blue-800 dark:text-blue-200">
-            <p>
+      <div className="bg-gradient-to-br from-[#00C9A7]/10 to-transparent border-2 border-[#00C9A7]/20 rounded-2xl p-6">
+        <div className="flex items-start gap-4">
+          <div className="h-12 w-12 bg-gradient-to-br from-[#00C9A7] to-[#00DBB7] rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
+            <Info className="h-6 w-6 text-white" />
+          </div>
+          <div className="text-sm text-[#424C63] dark:text-[#B8BCC8]">
+            <p className="mb-3">
               Los productos activos aparecen en el formulario de registro de ventas.
               Si desactivas un producto, no podrás registrar ventas para él, pero se
               mantendrán las ventas históricas.
             </p>
-            <p className="mt-2">
-              <Link href="/configuracion/categorias" className="font-medium underline hover:text-blue-900 dark:hover:text-blue-100">
-                Gestionar categorías
-              </Link>
-            </p>
+            <Link href="/configuracion/categorias" className="inline-flex items-center gap-2 font-semibold text-[#00C9A7] hover:text-[#00B396] link-underline">
+              Gestionar categorías →
+            </Link>
           </div>
         </div>
       </div>
