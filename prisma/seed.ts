@@ -1,9 +1,17 @@
+import dotenv from "dotenv";
+import { resolve } from "path";
 import bcrypt from "bcryptjs";
+import { PrismaClient } from "../src/app/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "@/app/generated/prisma/client";
-const adapter = new PrismaPg({
+import { Pool } from "pg";
+
+// Cargar variables de entorno desde .env.local
+dotenv.config({ path: resolve(__dirname, "../.env.local") });
+
+const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
+const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({
   adapter,
 });
