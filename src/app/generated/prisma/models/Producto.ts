@@ -50,6 +50,7 @@ export type ProductoMinAggregateOutputType = {
   costo: runtime.Decimal | null
   activo: boolean | null
   orden: number | null
+  userId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -62,6 +63,7 @@ export type ProductoMaxAggregateOutputType = {
   costo: runtime.Decimal | null
   activo: boolean | null
   orden: number | null
+  userId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -74,6 +76,7 @@ export type ProductoCountAggregateOutputType = {
   costo: number
   activo: number
   orden: number
+  userId: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -104,6 +107,7 @@ export type ProductoMinAggregateInputType = {
   costo?: true
   activo?: true
   orden?: true
+  userId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -116,6 +120,7 @@ export type ProductoMaxAggregateInputType = {
   costo?: true
   activo?: true
   orden?: true
+  userId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -128,6 +133,7 @@ export type ProductoCountAggregateInputType = {
   costo?: true
   activo?: true
   orden?: true
+  userId?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -227,6 +233,7 @@ export type ProductoGroupByOutputType = {
   costo: runtime.Decimal
   activo: boolean
   orden: number
+  userId: string
   createdAt: Date
   updatedAt: Date
   _count: ProductoCountAggregateOutputType | null
@@ -262,9 +269,11 @@ export type ProductoWhereInput = {
   costo?: Prisma.DecimalFilter<"Producto"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   activo?: Prisma.BoolFilter<"Producto"> | boolean
   orden?: Prisma.IntFilter<"Producto"> | number
+  userId?: Prisma.StringFilter<"Producto"> | string
   createdAt?: Prisma.DateTimeFilter<"Producto"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Producto"> | Date | string
   categoria?: Prisma.XOR<Prisma.CategoriaNullableScalarRelationFilter, Prisma.CategoriaWhereInput> | null
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   ventas?: Prisma.VentaListRelationFilter
 }
 
@@ -276,9 +285,11 @@ export type ProductoOrderByWithRelationInput = {
   costo?: Prisma.SortOrder
   activo?: Prisma.SortOrder
   orden?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   categoria?: Prisma.CategoriaOrderByWithRelationInput
+  user?: Prisma.UserOrderByWithRelationInput
   ventas?: Prisma.VentaOrderByRelationAggregateInput
 }
 
@@ -293,9 +304,11 @@ export type ProductoWhereUniqueInput = Prisma.AtLeast<{
   costo?: Prisma.DecimalFilter<"Producto"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   activo?: Prisma.BoolFilter<"Producto"> | boolean
   orden?: Prisma.IntFilter<"Producto"> | number
+  userId?: Prisma.StringFilter<"Producto"> | string
   createdAt?: Prisma.DateTimeFilter<"Producto"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Producto"> | Date | string
   categoria?: Prisma.XOR<Prisma.CategoriaNullableScalarRelationFilter, Prisma.CategoriaWhereInput> | null
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   ventas?: Prisma.VentaListRelationFilter
 }, "id">
 
@@ -307,6 +320,7 @@ export type ProductoOrderByWithAggregationInput = {
   costo?: Prisma.SortOrder
   activo?: Prisma.SortOrder
   orden?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.ProductoCountOrderByAggregateInput
@@ -327,6 +341,7 @@ export type ProductoScalarWhereWithAggregatesInput = {
   costo?: Prisma.DecimalWithAggregatesFilter<"Producto"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   activo?: Prisma.BoolWithAggregatesFilter<"Producto"> | boolean
   orden?: Prisma.IntWithAggregatesFilter<"Producto"> | number
+  userId?: Prisma.StringWithAggregatesFilter<"Producto"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Producto"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Producto"> | Date | string
 }
@@ -340,6 +355,7 @@ export type ProductoCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   categoria?: Prisma.CategoriaCreateNestedOneWithoutProductosInput
+  user: Prisma.UserCreateNestedOneWithoutProductosInput
   ventas?: Prisma.VentaCreateNestedManyWithoutProductoInput
 }
 
@@ -351,6 +367,7 @@ export type ProductoUncheckedCreateInput = {
   costo?: runtime.Decimal | runtime.DecimalJsLike | number | string
   activo?: boolean
   orden?: number
+  userId: string
   createdAt?: Date | string
   updatedAt?: Date | string
   ventas?: Prisma.VentaUncheckedCreateNestedManyWithoutProductoInput
@@ -365,6 +382,7 @@ export type ProductoUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   categoria?: Prisma.CategoriaUpdateOneWithoutProductosNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutProductosNestedInput
   ventas?: Prisma.VentaUpdateManyWithoutProductoNestedInput
 }
 
@@ -376,6 +394,7 @@ export type ProductoUncheckedUpdateInput = {
   costo?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   orden?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ventas?: Prisma.VentaUncheckedUpdateManyWithoutProductoNestedInput
@@ -389,6 +408,7 @@ export type ProductoCreateManyInput = {
   costo?: runtime.Decimal | runtime.DecimalJsLike | number | string
   activo?: boolean
   orden?: number
+  userId: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -411,6 +431,7 @@ export type ProductoUncheckedUpdateManyInput = {
   costo?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   orden?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -433,6 +454,7 @@ export type ProductoCountOrderByAggregateInput = {
   costo?: Prisma.SortOrder
   activo?: Prisma.SortOrder
   orden?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -453,6 +475,7 @@ export type ProductoMaxOrderByAggregateInput = {
   costo?: Prisma.SortOrder
   activo?: Prisma.SortOrder
   orden?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -465,6 +488,7 @@ export type ProductoMinOrderByAggregateInput = {
   costo?: Prisma.SortOrder
   activo?: Prisma.SortOrder
   orden?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -480,6 +504,48 @@ export type ProductoSumOrderByAggregateInput = {
 export type ProductoScalarRelationFilter = {
   is?: Prisma.ProductoWhereInput
   isNot?: Prisma.ProductoWhereInput
+}
+
+export type ProductoCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.ProductoCreateWithoutUserInput, Prisma.ProductoUncheckedCreateWithoutUserInput> | Prisma.ProductoCreateWithoutUserInput[] | Prisma.ProductoUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.ProductoCreateOrConnectWithoutUserInput | Prisma.ProductoCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.ProductoCreateManyUserInputEnvelope
+  connect?: Prisma.ProductoWhereUniqueInput | Prisma.ProductoWhereUniqueInput[]
+}
+
+export type ProductoUncheckedCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.ProductoCreateWithoutUserInput, Prisma.ProductoUncheckedCreateWithoutUserInput> | Prisma.ProductoCreateWithoutUserInput[] | Prisma.ProductoUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.ProductoCreateOrConnectWithoutUserInput | Prisma.ProductoCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.ProductoCreateManyUserInputEnvelope
+  connect?: Prisma.ProductoWhereUniqueInput | Prisma.ProductoWhereUniqueInput[]
+}
+
+export type ProductoUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.ProductoCreateWithoutUserInput, Prisma.ProductoUncheckedCreateWithoutUserInput> | Prisma.ProductoCreateWithoutUserInput[] | Prisma.ProductoUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.ProductoCreateOrConnectWithoutUserInput | Prisma.ProductoCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.ProductoUpsertWithWhereUniqueWithoutUserInput | Prisma.ProductoUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.ProductoCreateManyUserInputEnvelope
+  set?: Prisma.ProductoWhereUniqueInput | Prisma.ProductoWhereUniqueInput[]
+  disconnect?: Prisma.ProductoWhereUniqueInput | Prisma.ProductoWhereUniqueInput[]
+  delete?: Prisma.ProductoWhereUniqueInput | Prisma.ProductoWhereUniqueInput[]
+  connect?: Prisma.ProductoWhereUniqueInput | Prisma.ProductoWhereUniqueInput[]
+  update?: Prisma.ProductoUpdateWithWhereUniqueWithoutUserInput | Prisma.ProductoUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.ProductoUpdateManyWithWhereWithoutUserInput | Prisma.ProductoUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.ProductoScalarWhereInput | Prisma.ProductoScalarWhereInput[]
+}
+
+export type ProductoUncheckedUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.ProductoCreateWithoutUserInput, Prisma.ProductoUncheckedCreateWithoutUserInput> | Prisma.ProductoCreateWithoutUserInput[] | Prisma.ProductoUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.ProductoCreateOrConnectWithoutUserInput | Prisma.ProductoCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.ProductoUpsertWithWhereUniqueWithoutUserInput | Prisma.ProductoUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.ProductoCreateManyUserInputEnvelope
+  set?: Prisma.ProductoWhereUniqueInput | Prisma.ProductoWhereUniqueInput[]
+  disconnect?: Prisma.ProductoWhereUniqueInput | Prisma.ProductoWhereUniqueInput[]
+  delete?: Prisma.ProductoWhereUniqueInput | Prisma.ProductoWhereUniqueInput[]
+  connect?: Prisma.ProductoWhereUniqueInput | Prisma.ProductoWhereUniqueInput[]
+  update?: Prisma.ProductoUpdateWithWhereUniqueWithoutUserInput | Prisma.ProductoUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.ProductoUpdateManyWithWhereWithoutUserInput | Prisma.ProductoUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.ProductoScalarWhereInput | Prisma.ProductoScalarWhereInput[]
 }
 
 export type ProductoCreateNestedManyWithoutCategoriaInput = {
@@ -554,6 +620,73 @@ export type ProductoUpdateOneRequiredWithoutVentasNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProductoUpdateToOneWithWhereWithoutVentasInput, Prisma.ProductoUpdateWithoutVentasInput>, Prisma.ProductoUncheckedUpdateWithoutVentasInput>
 }
 
+export type ProductoCreateWithoutUserInput = {
+  nombre: string
+  precio?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  costo?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  activo?: boolean
+  orden?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  categoria?: Prisma.CategoriaCreateNestedOneWithoutProductosInput
+  ventas?: Prisma.VentaCreateNestedManyWithoutProductoInput
+}
+
+export type ProductoUncheckedCreateWithoutUserInput = {
+  id?: number
+  nombre: string
+  categoriaId?: number | null
+  precio?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  costo?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  activo?: boolean
+  orden?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  ventas?: Prisma.VentaUncheckedCreateNestedManyWithoutProductoInput
+}
+
+export type ProductoCreateOrConnectWithoutUserInput = {
+  where: Prisma.ProductoWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProductoCreateWithoutUserInput, Prisma.ProductoUncheckedCreateWithoutUserInput>
+}
+
+export type ProductoCreateManyUserInputEnvelope = {
+  data: Prisma.ProductoCreateManyUserInput | Prisma.ProductoCreateManyUserInput[]
+  skipDuplicates?: boolean
+}
+
+export type ProductoUpsertWithWhereUniqueWithoutUserInput = {
+  where: Prisma.ProductoWhereUniqueInput
+  update: Prisma.XOR<Prisma.ProductoUpdateWithoutUserInput, Prisma.ProductoUncheckedUpdateWithoutUserInput>
+  create: Prisma.XOR<Prisma.ProductoCreateWithoutUserInput, Prisma.ProductoUncheckedCreateWithoutUserInput>
+}
+
+export type ProductoUpdateWithWhereUniqueWithoutUserInput = {
+  where: Prisma.ProductoWhereUniqueInput
+  data: Prisma.XOR<Prisma.ProductoUpdateWithoutUserInput, Prisma.ProductoUncheckedUpdateWithoutUserInput>
+}
+
+export type ProductoUpdateManyWithWhereWithoutUserInput = {
+  where: Prisma.ProductoScalarWhereInput
+  data: Prisma.XOR<Prisma.ProductoUpdateManyMutationInput, Prisma.ProductoUncheckedUpdateManyWithoutUserInput>
+}
+
+export type ProductoScalarWhereInput = {
+  AND?: Prisma.ProductoScalarWhereInput | Prisma.ProductoScalarWhereInput[]
+  OR?: Prisma.ProductoScalarWhereInput[]
+  NOT?: Prisma.ProductoScalarWhereInput | Prisma.ProductoScalarWhereInput[]
+  id?: Prisma.IntFilter<"Producto"> | number
+  nombre?: Prisma.StringFilter<"Producto"> | string
+  categoriaId?: Prisma.IntNullableFilter<"Producto"> | number | null
+  precio?: Prisma.DecimalFilter<"Producto"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  costo?: Prisma.DecimalFilter<"Producto"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  activo?: Prisma.BoolFilter<"Producto"> | boolean
+  orden?: Prisma.IntFilter<"Producto"> | number
+  userId?: Prisma.StringFilter<"Producto"> | string
+  createdAt?: Prisma.DateTimeFilter<"Producto"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Producto"> | Date | string
+}
+
 export type ProductoCreateWithoutCategoriaInput = {
   nombre: string
   precio?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -562,6 +695,7 @@ export type ProductoCreateWithoutCategoriaInput = {
   orden?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutProductosInput
   ventas?: Prisma.VentaCreateNestedManyWithoutProductoInput
 }
 
@@ -572,6 +706,7 @@ export type ProductoUncheckedCreateWithoutCategoriaInput = {
   costo?: runtime.Decimal | runtime.DecimalJsLike | number | string
   activo?: boolean
   orden?: number
+  userId: string
   createdAt?: Date | string
   updatedAt?: Date | string
   ventas?: Prisma.VentaUncheckedCreateNestedManyWithoutProductoInput
@@ -603,21 +738,6 @@ export type ProductoUpdateManyWithWhereWithoutCategoriaInput = {
   data: Prisma.XOR<Prisma.ProductoUpdateManyMutationInput, Prisma.ProductoUncheckedUpdateManyWithoutCategoriaInput>
 }
 
-export type ProductoScalarWhereInput = {
-  AND?: Prisma.ProductoScalarWhereInput | Prisma.ProductoScalarWhereInput[]
-  OR?: Prisma.ProductoScalarWhereInput[]
-  NOT?: Prisma.ProductoScalarWhereInput | Prisma.ProductoScalarWhereInput[]
-  id?: Prisma.IntFilter<"Producto"> | number
-  nombre?: Prisma.StringFilter<"Producto"> | string
-  categoriaId?: Prisma.IntNullableFilter<"Producto"> | number | null
-  precio?: Prisma.DecimalFilter<"Producto"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  costo?: Prisma.DecimalFilter<"Producto"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  activo?: Prisma.BoolFilter<"Producto"> | boolean
-  orden?: Prisma.IntFilter<"Producto"> | number
-  createdAt?: Prisma.DateTimeFilter<"Producto"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Producto"> | Date | string
-}
-
 export type ProductoCreateWithoutVentasInput = {
   nombre: string
   precio?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -627,6 +747,7 @@ export type ProductoCreateWithoutVentasInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   categoria?: Prisma.CategoriaCreateNestedOneWithoutProductosInput
+  user: Prisma.UserCreateNestedOneWithoutProductosInput
 }
 
 export type ProductoUncheckedCreateWithoutVentasInput = {
@@ -637,6 +758,7 @@ export type ProductoUncheckedCreateWithoutVentasInput = {
   costo?: runtime.Decimal | runtime.DecimalJsLike | number | string
   activo?: boolean
   orden?: number
+  userId: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -666,9 +788,60 @@ export type ProductoUpdateWithoutVentasInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   categoria?: Prisma.CategoriaUpdateOneWithoutProductosNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutProductosNestedInput
 }
 
 export type ProductoUncheckedUpdateWithoutVentasInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  categoriaId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  precio?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  costo?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  orden?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ProductoCreateManyUserInput = {
+  id?: number
+  nombre: string
+  categoriaId?: number | null
+  precio?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  costo?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  activo?: boolean
+  orden?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ProductoUpdateWithoutUserInput = {
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  precio?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  costo?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  orden?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  categoria?: Prisma.CategoriaUpdateOneWithoutProductosNestedInput
+  ventas?: Prisma.VentaUpdateManyWithoutProductoNestedInput
+}
+
+export type ProductoUncheckedUpdateWithoutUserInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  categoriaId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  precio?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  costo?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  orden?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ventas?: Prisma.VentaUncheckedUpdateManyWithoutProductoNestedInput
+}
+
+export type ProductoUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
   categoriaId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -687,6 +860,7 @@ export type ProductoCreateManyCategoriaInput = {
   costo?: runtime.Decimal | runtime.DecimalJsLike | number | string
   activo?: boolean
   orden?: number
+  userId: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -699,6 +873,7 @@ export type ProductoUpdateWithoutCategoriaInput = {
   orden?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutProductosNestedInput
   ventas?: Prisma.VentaUpdateManyWithoutProductoNestedInput
 }
 
@@ -709,6 +884,7 @@ export type ProductoUncheckedUpdateWithoutCategoriaInput = {
   costo?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   orden?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ventas?: Prisma.VentaUncheckedUpdateManyWithoutProductoNestedInput
@@ -721,6 +897,7 @@ export type ProductoUncheckedUpdateManyWithoutCategoriaInput = {
   costo?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   orden?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -764,9 +941,11 @@ export type ProductoSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   costo?: boolean
   activo?: boolean
   orden?: boolean
+  userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   categoria?: boolean | Prisma.Producto$categoriaArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   ventas?: boolean | Prisma.Producto$ventasArgs<ExtArgs>
   _count?: boolean | Prisma.ProductoCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["producto"]>
@@ -779,9 +958,11 @@ export type ProductoSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   costo?: boolean
   activo?: boolean
   orden?: boolean
+  userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   categoria?: boolean | Prisma.Producto$categoriaArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["producto"]>
 
 export type ProductoSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -792,9 +973,11 @@ export type ProductoSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   costo?: boolean
   activo?: boolean
   orden?: boolean
+  userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   categoria?: boolean | Prisma.Producto$categoriaArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["producto"]>
 
 export type ProductoSelectScalar = {
@@ -805,27 +988,32 @@ export type ProductoSelectScalar = {
   costo?: boolean
   activo?: boolean
   orden?: boolean
+  userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ProductoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nombre" | "categoriaId" | "precio" | "costo" | "activo" | "orden" | "createdAt" | "updatedAt", ExtArgs["result"]["producto"]>
+export type ProductoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nombre" | "categoriaId" | "precio" | "costo" | "activo" | "orden" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["producto"]>
 export type ProductoInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   categoria?: boolean | Prisma.Producto$categoriaArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   ventas?: boolean | Prisma.Producto$ventasArgs<ExtArgs>
   _count?: boolean | Prisma.ProductoCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ProductoIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   categoria?: boolean | Prisma.Producto$categoriaArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type ProductoIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   categoria?: boolean | Prisma.Producto$categoriaArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
 export type $ProductoPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Producto"
   objects: {
     categoria: Prisma.$CategoriaPayload<ExtArgs> | null
+    user: Prisma.$UserPayload<ExtArgs>
     ventas: Prisma.$VentaPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -836,6 +1024,7 @@ export type $ProductoPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     costo: runtime.Decimal
     activo: boolean
     orden: number
+    userId: string
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["producto"]>
@@ -1233,6 +1422,7 @@ readonly fields: ProductoFieldRefs;
 export interface Prisma__ProductoClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   categoria<T extends Prisma.Producto$categoriaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Producto$categoriaArgs<ExtArgs>>): Prisma.Prisma__CategoriaClient<runtime.Types.Result.GetResult<Prisma.$CategoriaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   ventas<T extends Prisma.Producto$ventasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Producto$ventasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VentaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1270,6 +1460,7 @@ export interface ProductoFieldRefs {
   readonly costo: Prisma.FieldRef<"Producto", 'Decimal'>
   readonly activo: Prisma.FieldRef<"Producto", 'Boolean'>
   readonly orden: Prisma.FieldRef<"Producto", 'Int'>
+  readonly userId: Prisma.FieldRef<"Producto", 'String'>
   readonly createdAt: Prisma.FieldRef<"Producto", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Producto", 'DateTime'>
 }

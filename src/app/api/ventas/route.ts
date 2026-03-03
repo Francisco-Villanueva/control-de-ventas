@@ -25,22 +25,23 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 })
     }
 
+    const userId = session.user.id
     const { searchParams } = new URL(request.url)
     const fecha = searchParams.get("fecha")
     const dias = searchParams.get("dias")
 
     if (fecha) {
-      const ventas = await getVentasByFecha(fecha)
+      const ventas = await getVentasByFecha(userId, fecha)
       return NextResponse.json(ventas)
     }
 
     if (dias) {
-      const ventas = await getVentasRecientes(parseInt(dias))
+      const ventas = await getVentasRecientes(userId, parseInt(dias))
       return NextResponse.json(ventas)
     }
 
     // Por defecto, últimos 7 días
-    const ventas = await getVentasRecientes(7)
+    const ventas = await getVentasRecientes(userId, 7)
     return NextResponse.json(ventas)
   } catch (error) {
     console.error("Error al obtener ventas:", error)
@@ -58,6 +59,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 })
     }
 
+    const userId = session.user.id
     const body = await request.json()
     const validatedData = ventaBatchSchema.parse(body)
 
@@ -72,17 +74,24 @@ export async function POST(request: Request) {
       )
     }
 
-    const ventas = await createOrUpdateVentasBatch({
+    const ventas = await createOrUpdateVentasBatch(userId, {
       fecha: validatedData.fecha,
       ventas: validatedData.ventas,
     })
 
     return NextResponse.json(ventas, { status: 201 })
-  } catch (error) {
+  } catch (error: any) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { error: "Datos inválidos", details: error.issues },
         { status: 400 }
+      )
+    }
+
+    if (error.message === "Producto no encontrado") {
+      return NextResponse.json(
+        { error: "Producto no encontrado" },
+        { status: 404 }
       )
     }
 

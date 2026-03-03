@@ -38,6 +38,7 @@ export type ConfiguracionMinAggregateOutputType = {
   id: number | null
   clave: string | null
   valor: string | null
+  userId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -46,6 +47,7 @@ export type ConfiguracionMaxAggregateOutputType = {
   id: number | null
   clave: string | null
   valor: string | null
+  userId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -54,6 +56,7 @@ export type ConfiguracionCountAggregateOutputType = {
   id: number
   clave: number
   valor: number
+  userId: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -72,6 +75,7 @@ export type ConfiguracionMinAggregateInputType = {
   id?: true
   clave?: true
   valor?: true
+  userId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -80,6 +84,7 @@ export type ConfiguracionMaxAggregateInputType = {
   id?: true
   clave?: true
   valor?: true
+  userId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -88,6 +93,7 @@ export type ConfiguracionCountAggregateInputType = {
   id?: true
   clave?: true
   valor?: true
+  userId?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -183,6 +189,7 @@ export type ConfiguracionGroupByOutputType = {
   id: number
   clave: string
   valor: string
+  userId: string
   createdAt: Date
   updatedAt: Date
   _count: ConfiguracionCountAggregateOutputType | null
@@ -214,33 +221,41 @@ export type ConfiguracionWhereInput = {
   id?: Prisma.IntFilter<"Configuracion"> | number
   clave?: Prisma.StringFilter<"Configuracion"> | string
   valor?: Prisma.StringFilter<"Configuracion"> | string
+  userId?: Prisma.StringFilter<"Configuracion"> | string
   createdAt?: Prisma.DateTimeFilter<"Configuracion"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Configuracion"> | Date | string
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type ConfiguracionOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   clave?: Prisma.SortOrder
   valor?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  user?: Prisma.UserOrderByWithRelationInput
 }
 
 export type ConfiguracionWhereUniqueInput = Prisma.AtLeast<{
   id?: number
-  clave?: string
+  userId_clave?: Prisma.ConfiguracionUserIdClaveCompoundUniqueInput
   AND?: Prisma.ConfiguracionWhereInput | Prisma.ConfiguracionWhereInput[]
   OR?: Prisma.ConfiguracionWhereInput[]
   NOT?: Prisma.ConfiguracionWhereInput | Prisma.ConfiguracionWhereInput[]
+  clave?: Prisma.StringFilter<"Configuracion"> | string
   valor?: Prisma.StringFilter<"Configuracion"> | string
+  userId?: Prisma.StringFilter<"Configuracion"> | string
   createdAt?: Prisma.DateTimeFilter<"Configuracion"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Configuracion"> | Date | string
-}, "id" | "clave">
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+}, "id" | "userId_clave">
 
 export type ConfiguracionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   clave?: Prisma.SortOrder
   valor?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.ConfiguracionCountOrderByAggregateInput
@@ -257,6 +272,7 @@ export type ConfiguracionScalarWhereWithAggregatesInput = {
   id?: Prisma.IntWithAggregatesFilter<"Configuracion"> | number
   clave?: Prisma.StringWithAggregatesFilter<"Configuracion"> | string
   valor?: Prisma.StringWithAggregatesFilter<"Configuracion"> | string
+  userId?: Prisma.StringWithAggregatesFilter<"Configuracion"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Configuracion"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Configuracion"> | Date | string
 }
@@ -266,12 +282,14 @@ export type ConfiguracionCreateInput = {
   valor: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutConfiguracionInput
 }
 
 export type ConfiguracionUncheckedCreateInput = {
   id?: number
   clave: string
   valor: string
+  userId: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -281,12 +299,14 @@ export type ConfiguracionUpdateInput = {
   valor?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutConfiguracionNestedInput
 }
 
 export type ConfiguracionUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   clave?: Prisma.StringFieldUpdateOperationsInput | string
   valor?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -295,6 +315,7 @@ export type ConfiguracionCreateManyInput = {
   id?: number
   clave: string
   valor: string
+  userId: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -310,14 +331,31 @@ export type ConfiguracionUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   clave?: Prisma.StringFieldUpdateOperationsInput | string
   valor?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ConfiguracionListRelationFilter = {
+  every?: Prisma.ConfiguracionWhereInput
+  some?: Prisma.ConfiguracionWhereInput
+  none?: Prisma.ConfiguracionWhereInput
+}
+
+export type ConfiguracionOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
+export type ConfiguracionUserIdClaveCompoundUniqueInput = {
+  userId: string
+  clave: string
 }
 
 export type ConfiguracionCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   clave?: Prisma.SortOrder
   valor?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -330,6 +368,7 @@ export type ConfiguracionMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   clave?: Prisma.SortOrder
   valor?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -338,6 +377,7 @@ export type ConfiguracionMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   clave?: Prisma.SortOrder
   valor?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -346,49 +386,194 @@ export type ConfiguracionSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
 }
 
+export type ConfiguracionCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.ConfiguracionCreateWithoutUserInput, Prisma.ConfiguracionUncheckedCreateWithoutUserInput> | Prisma.ConfiguracionCreateWithoutUserInput[] | Prisma.ConfiguracionUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.ConfiguracionCreateOrConnectWithoutUserInput | Prisma.ConfiguracionCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.ConfiguracionCreateManyUserInputEnvelope
+  connect?: Prisma.ConfiguracionWhereUniqueInput | Prisma.ConfiguracionWhereUniqueInput[]
+}
+
+export type ConfiguracionUncheckedCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.ConfiguracionCreateWithoutUserInput, Prisma.ConfiguracionUncheckedCreateWithoutUserInput> | Prisma.ConfiguracionCreateWithoutUserInput[] | Prisma.ConfiguracionUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.ConfiguracionCreateOrConnectWithoutUserInput | Prisma.ConfiguracionCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.ConfiguracionCreateManyUserInputEnvelope
+  connect?: Prisma.ConfiguracionWhereUniqueInput | Prisma.ConfiguracionWhereUniqueInput[]
+}
+
+export type ConfiguracionUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.ConfiguracionCreateWithoutUserInput, Prisma.ConfiguracionUncheckedCreateWithoutUserInput> | Prisma.ConfiguracionCreateWithoutUserInput[] | Prisma.ConfiguracionUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.ConfiguracionCreateOrConnectWithoutUserInput | Prisma.ConfiguracionCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.ConfiguracionUpsertWithWhereUniqueWithoutUserInput | Prisma.ConfiguracionUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.ConfiguracionCreateManyUserInputEnvelope
+  set?: Prisma.ConfiguracionWhereUniqueInput | Prisma.ConfiguracionWhereUniqueInput[]
+  disconnect?: Prisma.ConfiguracionWhereUniqueInput | Prisma.ConfiguracionWhereUniqueInput[]
+  delete?: Prisma.ConfiguracionWhereUniqueInput | Prisma.ConfiguracionWhereUniqueInput[]
+  connect?: Prisma.ConfiguracionWhereUniqueInput | Prisma.ConfiguracionWhereUniqueInput[]
+  update?: Prisma.ConfiguracionUpdateWithWhereUniqueWithoutUserInput | Prisma.ConfiguracionUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.ConfiguracionUpdateManyWithWhereWithoutUserInput | Prisma.ConfiguracionUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.ConfiguracionScalarWhereInput | Prisma.ConfiguracionScalarWhereInput[]
+}
+
+export type ConfiguracionUncheckedUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.ConfiguracionCreateWithoutUserInput, Prisma.ConfiguracionUncheckedCreateWithoutUserInput> | Prisma.ConfiguracionCreateWithoutUserInput[] | Prisma.ConfiguracionUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.ConfiguracionCreateOrConnectWithoutUserInput | Prisma.ConfiguracionCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.ConfiguracionUpsertWithWhereUniqueWithoutUserInput | Prisma.ConfiguracionUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.ConfiguracionCreateManyUserInputEnvelope
+  set?: Prisma.ConfiguracionWhereUniqueInput | Prisma.ConfiguracionWhereUniqueInput[]
+  disconnect?: Prisma.ConfiguracionWhereUniqueInput | Prisma.ConfiguracionWhereUniqueInput[]
+  delete?: Prisma.ConfiguracionWhereUniqueInput | Prisma.ConfiguracionWhereUniqueInput[]
+  connect?: Prisma.ConfiguracionWhereUniqueInput | Prisma.ConfiguracionWhereUniqueInput[]
+  update?: Prisma.ConfiguracionUpdateWithWhereUniqueWithoutUserInput | Prisma.ConfiguracionUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.ConfiguracionUpdateManyWithWhereWithoutUserInput | Prisma.ConfiguracionUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.ConfiguracionScalarWhereInput | Prisma.ConfiguracionScalarWhereInput[]
+}
+
+export type ConfiguracionCreateWithoutUserInput = {
+  clave: string
+  valor: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ConfiguracionUncheckedCreateWithoutUserInput = {
+  id?: number
+  clave: string
+  valor: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ConfiguracionCreateOrConnectWithoutUserInput = {
+  where: Prisma.ConfiguracionWhereUniqueInput
+  create: Prisma.XOR<Prisma.ConfiguracionCreateWithoutUserInput, Prisma.ConfiguracionUncheckedCreateWithoutUserInput>
+}
+
+export type ConfiguracionCreateManyUserInputEnvelope = {
+  data: Prisma.ConfiguracionCreateManyUserInput | Prisma.ConfiguracionCreateManyUserInput[]
+  skipDuplicates?: boolean
+}
+
+export type ConfiguracionUpsertWithWhereUniqueWithoutUserInput = {
+  where: Prisma.ConfiguracionWhereUniqueInput
+  update: Prisma.XOR<Prisma.ConfiguracionUpdateWithoutUserInput, Prisma.ConfiguracionUncheckedUpdateWithoutUserInput>
+  create: Prisma.XOR<Prisma.ConfiguracionCreateWithoutUserInput, Prisma.ConfiguracionUncheckedCreateWithoutUserInput>
+}
+
+export type ConfiguracionUpdateWithWhereUniqueWithoutUserInput = {
+  where: Prisma.ConfiguracionWhereUniqueInput
+  data: Prisma.XOR<Prisma.ConfiguracionUpdateWithoutUserInput, Prisma.ConfiguracionUncheckedUpdateWithoutUserInput>
+}
+
+export type ConfiguracionUpdateManyWithWhereWithoutUserInput = {
+  where: Prisma.ConfiguracionScalarWhereInput
+  data: Prisma.XOR<Prisma.ConfiguracionUpdateManyMutationInput, Prisma.ConfiguracionUncheckedUpdateManyWithoutUserInput>
+}
+
+export type ConfiguracionScalarWhereInput = {
+  AND?: Prisma.ConfiguracionScalarWhereInput | Prisma.ConfiguracionScalarWhereInput[]
+  OR?: Prisma.ConfiguracionScalarWhereInput[]
+  NOT?: Prisma.ConfiguracionScalarWhereInput | Prisma.ConfiguracionScalarWhereInput[]
+  id?: Prisma.IntFilter<"Configuracion"> | number
+  clave?: Prisma.StringFilter<"Configuracion"> | string
+  valor?: Prisma.StringFilter<"Configuracion"> | string
+  userId?: Prisma.StringFilter<"Configuracion"> | string
+  createdAt?: Prisma.DateTimeFilter<"Configuracion"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Configuracion"> | Date | string
+}
+
+export type ConfiguracionCreateManyUserInput = {
+  id?: number
+  clave: string
+  valor: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ConfiguracionUpdateWithoutUserInput = {
+  clave?: Prisma.StringFieldUpdateOperationsInput | string
+  valor?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ConfiguracionUncheckedUpdateWithoutUserInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  clave?: Prisma.StringFieldUpdateOperationsInput | string
+  valor?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ConfiguracionUncheckedUpdateManyWithoutUserInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  clave?: Prisma.StringFieldUpdateOperationsInput | string
+  valor?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 
 
 export type ConfiguracionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   clave?: boolean
   valor?: boolean
+  userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["configuracion"]>
 
 export type ConfiguracionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   clave?: boolean
   valor?: boolean
+  userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["configuracion"]>
 
 export type ConfiguracionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   clave?: boolean
   valor?: boolean
+  userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["configuracion"]>
 
 export type ConfiguracionSelectScalar = {
   id?: boolean
   clave?: boolean
   valor?: boolean
+  userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ConfiguracionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "clave" | "valor" | "createdAt" | "updatedAt", ExtArgs["result"]["configuracion"]>
+export type ConfiguracionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "clave" | "valor" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["configuracion"]>
+export type ConfiguracionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type ConfiguracionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type ConfiguracionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
 
 export type $ConfiguracionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Configuracion"
-  objects: {}
+  objects: {
+    user: Prisma.$UserPayload<ExtArgs>
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     clave: string
     valor: string
+    userId: string
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["configuracion"]>
@@ -785,6 +970,7 @@ readonly fields: ConfiguracionFieldRefs;
  */
 export interface Prisma__ConfiguracionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -817,6 +1003,7 @@ export interface ConfiguracionFieldRefs {
   readonly id: Prisma.FieldRef<"Configuracion", 'Int'>
   readonly clave: Prisma.FieldRef<"Configuracion", 'String'>
   readonly valor: Prisma.FieldRef<"Configuracion", 'String'>
+  readonly userId: Prisma.FieldRef<"Configuracion", 'String'>
   readonly createdAt: Prisma.FieldRef<"Configuracion", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Configuracion", 'DateTime'>
 }
@@ -836,6 +1023,10 @@ export type ConfiguracionFindUniqueArgs<ExtArgs extends runtime.Types.Extensions
    */
   omit?: Prisma.ConfiguracionOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ConfiguracionInclude<ExtArgs> | null
+  /**
    * Filter, which Configuracion to fetch.
    */
   where: Prisma.ConfiguracionWhereUniqueInput
@@ -854,6 +1045,10 @@ export type ConfiguracionFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Ext
    */
   omit?: Prisma.ConfiguracionOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ConfiguracionInclude<ExtArgs> | null
+  /**
    * Filter, which Configuracion to fetch.
    */
   where: Prisma.ConfiguracionWhereUniqueInput
@@ -871,6 +1066,10 @@ export type ConfiguracionFindFirstArgs<ExtArgs extends runtime.Types.Extensions.
    * Omit specific fields from the Configuracion
    */
   omit?: Prisma.ConfiguracionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ConfiguracionInclude<ExtArgs> | null
   /**
    * Filter, which Configuracion to fetch.
    */
@@ -920,6 +1119,10 @@ export type ConfiguracionFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Exte
    */
   omit?: Prisma.ConfiguracionOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ConfiguracionInclude<ExtArgs> | null
+  /**
    * Filter, which Configuracion to fetch.
    */
   where?: Prisma.ConfiguracionWhereInput
@@ -968,6 +1171,10 @@ export type ConfiguracionFindManyArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   omit?: Prisma.ConfiguracionOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ConfiguracionInclude<ExtArgs> | null
+  /**
    * Filter, which Configuracions to fetch.
    */
   where?: Prisma.ConfiguracionWhereInput
@@ -1011,6 +1218,10 @@ export type ConfiguracionCreateArgs<ExtArgs extends runtime.Types.Extensions.Int
    */
   omit?: Prisma.ConfiguracionOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ConfiguracionInclude<ExtArgs> | null
+  /**
    * The data needed to create a Configuracion.
    */
   data: Prisma.XOR<Prisma.ConfiguracionCreateInput, Prisma.ConfiguracionUncheckedCreateInput>
@@ -1044,6 +1255,10 @@ export type ConfiguracionCreateManyAndReturnArgs<ExtArgs extends runtime.Types.E
    */
   data: Prisma.ConfiguracionCreateManyInput | Prisma.ConfiguracionCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ConfiguracionIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1058,6 +1273,10 @@ export type ConfiguracionUpdateArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Omit specific fields from the Configuracion
    */
   omit?: Prisma.ConfiguracionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ConfiguracionInclude<ExtArgs> | null
   /**
    * The data needed to update a Configuracion.
    */
@@ -1110,6 +1329,10 @@ export type ConfiguracionUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.E
    * Limit how many Configuracions to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ConfiguracionIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1124,6 +1347,10 @@ export type ConfiguracionUpsertArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Omit specific fields from the Configuracion
    */
   omit?: Prisma.ConfiguracionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ConfiguracionInclude<ExtArgs> | null
   /**
    * The filter to search for the Configuracion to update in case it exists.
    */
@@ -1150,6 +1377,10 @@ export type ConfiguracionDeleteArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Omit specific fields from the Configuracion
    */
   omit?: Prisma.ConfiguracionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ConfiguracionInclude<ExtArgs> | null
   /**
    * Filter which Configuracion to delete.
    */
@@ -1182,4 +1413,8 @@ export type ConfiguracionDefaultArgs<ExtArgs extends runtime.Types.Extensions.In
    * Omit specific fields from the Configuracion
    */
   omit?: Prisma.ConfiguracionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ConfiguracionInclude<ExtArgs> | null
 }

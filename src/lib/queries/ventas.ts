@@ -3,9 +3,10 @@ import prisma from "@/lib/prisma";
 import { subDays } from "date-fns";
 import { toDateString, toUTCDate } from "@/lib/dateUtils";
 
-export async function getVentasByFecha(fechaStr: string) {
+export async function getVentasByFecha(userId: string, fechaStr: string) {
   return await prisma.venta.findMany({
     where: {
+      userId,
       fecha: toUTCDate(fechaStr),
     },
     include: {
@@ -23,12 +24,13 @@ export async function getVentasByFecha(fechaStr: string) {
   });
 }
 
-export async function getVentasRecientes(dias = 7) {
+export async function getVentasRecientes(userId: string, dias = 7) {
   const fechaInicioDate = subDays(new Date(), dias);
   const fechaInicio = toDateString(fechaInicioDate);
 
   return await prisma.venta.findMany({
     where: {
+      userId,
       fecha: {
         gte: toUTCDate(fechaInicio),
       },
@@ -46,16 +48,29 @@ export async function getVentasRecientes(dias = 7) {
   });
 }
 
-export async function createOrUpdateVenta(data: {
-  fecha: string;
-  productoId: number;
-  cantidad: number;
-}) {
+export async function createOrUpdateVenta(
+  userId: string,
+  data: {
+    fecha: string;
+    productoId: number;
+    cantidad: number;
+  },
+) {
   const fechaUTC = toUTCDate(data.fecha);
+
+  // Validar que el producto pertenece al usuario
+  const producto = await prisma.producto.findFirst({
+    where: { id: data.productoId, userId },
+  });
+
+  if (!producto) {
+    throw new Error("Producto no encontrado");
+  }
 
   return await prisma.venta.upsert({
     where: {
-      fecha_productoId: {
+      userId_fecha_productoId: {
+        userId,
         fecha: fechaUTC,
         productoId: data.productoId,
       },
@@ -64,6 +79,7 @@ export async function createOrUpdateVenta(data: {
       cantidad: data.cantidad,
     },
     create: {
+      userId,
       fecha: fechaUTC,
       productoId: data.productoId,
       cantidad: data.cantidad,
@@ -78,14 +94,17 @@ export async function createOrUpdateVenta(data: {
   });
 }
 
-export async function createOrUpdateVentasBatch(data: {
-  fecha: string;
-  ventas: Array<{ productoId: number; cantidad: number }>;
-}) {
+export async function createOrUpdateVentasBatch(
+  userId: string,
+  data: {
+    fecha: string;
+    ventas: Array<{ productoId: number; cantidad: number }>;
+  },
+) {
   const results = [];
 
   for (const venta of data.ventas) {
-    const result = await createOrUpdateVenta({
+    const result = await createOrUpdateVenta(userId, {
       fecha: data.fecha,
       productoId: venta.productoId,
       cantidad: venta.cantidad,
@@ -96,10 +115,15 @@ export async function createOrUpdateVentasBatch(data: {
   return results;
 }
 
-export async function deleteVenta(fechaStr: string, productoId: number) {
+export async function deleteVenta(
+  userId: string,
+  fechaStr: string,
+  productoId: number,
+) {
   return await prisma.venta.delete({
     where: {
-      fecha_productoId: {
+      userId_fecha_productoId: {
+        userId,
         fecha: toUTCDate(fechaStr),
         productoId,
       },

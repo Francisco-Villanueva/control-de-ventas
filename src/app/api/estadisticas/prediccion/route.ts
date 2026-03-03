@@ -1,15 +1,25 @@
 import { NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
+import { auth } from "@/lib/auth"
 
 export async function GET() {
   try {
+    const session = await auth()
+    if (!session) {
+      return NextResponse.json({ error: "No autorizado" }, { status: 401 })
+    }
+
+    const userId = session.user.id
     const hoy = new Date()
     const manana = new Date(hoy)
     manana.setDate(manana.getDate() + 1)
     const diaSemanaManana = manana.getDay()
 
-    // Obtener todas las ventas históricas
+    // Obtener todas las ventas históricas del usuario
     const ventas = await prisma.venta.findMany({
+      where: {
+        userId,
+      },
       include: {
         producto: true,
       },

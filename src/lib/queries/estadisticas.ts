@@ -9,9 +9,12 @@ import {
 } from "date-fns";
 import { fromPrismaDate, fromDateString, toUTCDate } from "@/lib/dateUtils";
 
-export async function getPromediosPorDiaSemana() {
-  // Obtener todas las ventas
+export async function getPromediosPorDiaSemana(userId: string) {
+  // Obtener todas las ventas del usuario
   const ventas = await prisma.venta.findMany({
+    where: {
+      userId,
+    },
     include: {
       producto: true,
     },
@@ -85,12 +88,13 @@ export async function getPromediosPorDiaSemana() {
   return resultado;
 }
 
-export async function getResumenMensual(fecha: Date) {
+export async function getResumenMensual(userId: string, fecha: Date) {
   const inicio = startOfMonth(fecha);
   const fin = endOfMonth(fecha);
 
   const ventas = await prisma.venta.findMany({
     where: {
+      userId,
       fecha: {
         gte: inicio,
         lte: fin,
@@ -150,12 +154,13 @@ export async function getResumenMensual(fecha: Date) {
   };
 }
 
-export async function getResumenAnual(fecha: Date) {
+export async function getResumenAnual(userId: string, fecha: Date) {
   const inicio = startOfYear(fecha);
   const fin = endOfYear(fecha);
 
   const ventas = await prisma.venta.findMany({
     where: {
+      userId,
       fecha: {
         gte: inicio,
         lte: fin,
@@ -203,9 +208,10 @@ export async function getResumenAnual(fecha: Date) {
   );
 }
 
-export async function getVentasDelDia(fechaStr: string) {
+export async function getVentasDelDia(userId: string, fechaStr: string) {
   const ventas = await prisma.venta.findMany({
     where: {
+      userId,
       fecha: toUTCDate(fechaStr),
     },
     include: {

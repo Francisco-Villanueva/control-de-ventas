@@ -9,7 +9,8 @@ export async function GET() {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 })
     }
 
-    const promedios = await getPromediosPorDiaSemana()
+    const userId = session.user.id
+    const promedios = await getPromediosPorDiaSemana(userId)
     return NextResponse.json(promedios)
   } catch (error) {
     console.error("Error al obtener promedios:", error)

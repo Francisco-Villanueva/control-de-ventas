@@ -1,15 +1,23 @@
 import { NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
 import { getTodayString, toUTCDate, fromPrismaDate, fromDateString } from "@/lib/dateUtils"
+import { auth } from "@/lib/auth"
 
 export async function GET() {
   try {
+    const session = await auth()
+    if (!session) {
+      return NextResponse.json({ error: "No autorizado" }, { status: 401 })
+    }
+
+    const userId = session.user.id
     const hoyStr = getTodayString()
     const hoyUTC = toUTCDate(hoyStr)
 
     // Ventas de hoy
     const ventasHoy = await prisma.venta.findMany({
       where: {
+        userId,
         fecha: hoyUTC,
       },
       include: {
@@ -36,6 +44,7 @@ export async function GET() {
 
     const ventasMes = await prisma.venta.findMany({
       where: {
+        userId,
         fecha: {
           gte: inicioMes,
         },
@@ -55,6 +64,7 @@ export async function GET() {
     const diaSemana = new Date().getDay()
     const ventasDiaSemana = await prisma.venta.findMany({
       where: {
+        userId,
         fecha: {
           lt: hoyUTC,
         },

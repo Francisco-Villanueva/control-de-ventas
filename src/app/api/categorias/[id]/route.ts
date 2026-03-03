@@ -23,18 +23,19 @@ export async function GET(
       return NextResponse.json({ error: "No autorizado" }, { status: 401 })
     }
 
+    const userId = session.user.id
     const { id } = await params
-    const categoria = await getCategoriaById(parseInt(id))
+    const categoria = await getCategoriaById(userId, parseInt(id))
 
-    if (!categoria) {
+    return NextResponse.json(categoria)
+  } catch (error: any) {
+    if (error.message === "Categoría no encontrada") {
       return NextResponse.json(
         { error: "Categoría no encontrada" },
         { status: 404 }
       )
     }
 
-    return NextResponse.json(categoria)
-  } catch (error) {
     console.error("Error al obtener categoría:", error)
     return NextResponse.json(
       { error: "Error al obtener categoría" },
@@ -53,17 +54,25 @@ export async function PUT(
       return NextResponse.json({ error: "No autorizado" }, { status: 401 })
     }
 
+    const userId = session.user.id
     const { id } = await params
     const body = await request.json()
     const validatedData = updateCategoriaSchema.parse(body)
 
-    const categoria = await updateCategoria(parseInt(id), validatedData)
+    const categoria = await updateCategoria(userId, parseInt(id), validatedData)
     return NextResponse.json(categoria)
-  } catch (error) {
+  } catch (error: any) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { error: "Datos inválidos", details: error.issues },
         { status: 400 }
+      )
+    }
+
+    if (error.message === "Categoría no encontrada") {
+      return NextResponse.json(
+        { error: "Categoría no encontrada" },
+        { status: 404 }
       )
     }
 
@@ -85,10 +94,18 @@ export async function DELETE(
       return NextResponse.json({ error: "No autorizado" }, { status: 401 })
     }
 
+    const userId = session.user.id
     const { id } = await params
-    await deleteCategoria(parseInt(id))
+    await deleteCategoria(userId, parseInt(id))
     return NextResponse.json({ message: "Categoría eliminada" })
   } catch (error: any) {
+    if (error.message === "Categoría no encontrada") {
+      return NextResponse.json(
+        { error: "Categoría no encontrada" },
+        { status: 404 }
+      )
+    }
+
     console.error("Error al eliminar categoría:", error)
     return NextResponse.json(
       { error: error.message || "Error al eliminar categoría" },

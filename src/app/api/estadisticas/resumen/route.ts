@@ -12,6 +12,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 })
     }
 
+    const userId = session.user.id
     const { searchParams } = new URL(request.url)
     const periodo = searchParams.get("periodo") // 'mensual' o 'anual'
     const fecha = searchParams.get("fecha") // formato: 'YYYY-MM' o 'YYYY'
@@ -26,10 +27,10 @@ export async function GET(request: Request) {
     const fechaObj = new Date(fecha)
 
     if (periodo === "mensual") {
-      const resumen = await getResumenMensual(fechaObj)
+      const resumen = await getResumenMensual(userId, fechaObj)
       return NextResponse.json(resumen)
     } else if (periodo === "anual") {
-      const resumen = await getResumenAnual(fechaObj)
+      const resumen = await getResumenAnual(userId, fechaObj)
       return NextResponse.json(resumen)
     } else {
       return NextResponse.json(

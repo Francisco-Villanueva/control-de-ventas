@@ -43,6 +43,7 @@ export type VentaMinAggregateOutputType = {
   fecha: Date | null
   productoId: number | null
   cantidad: number | null
+  userId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -52,6 +53,7 @@ export type VentaMaxAggregateOutputType = {
   fecha: Date | null
   productoId: number | null
   cantidad: number | null
+  userId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -61,6 +63,7 @@ export type VentaCountAggregateOutputType = {
   fecha: number
   productoId: number
   cantidad: number
+  userId: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -84,6 +87,7 @@ export type VentaMinAggregateInputType = {
   fecha?: true
   productoId?: true
   cantidad?: true
+  userId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -93,6 +97,7 @@ export type VentaMaxAggregateInputType = {
   fecha?: true
   productoId?: true
   cantidad?: true
+  userId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -102,6 +107,7 @@ export type VentaCountAggregateInputType = {
   fecha?: true
   productoId?: true
   cantidad?: true
+  userId?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -198,6 +204,7 @@ export type VentaGroupByOutputType = {
   fecha: Date
   productoId: number
   cantidad: number
+  userId: string
   createdAt: Date
   updatedAt: Date
   _count: VentaCountAggregateOutputType | null
@@ -230,9 +237,11 @@ export type VentaWhereInput = {
   fecha?: Prisma.DateTimeFilter<"Venta"> | Date | string
   productoId?: Prisma.IntFilter<"Venta"> | number
   cantidad?: Prisma.IntFilter<"Venta"> | number
+  userId?: Prisma.StringFilter<"Venta"> | string
   createdAt?: Prisma.DateTimeFilter<"Venta"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Venta"> | Date | string
   producto?: Prisma.XOR<Prisma.ProductoScalarRelationFilter, Prisma.ProductoWhereInput>
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type VentaOrderByWithRelationInput = {
@@ -240,30 +249,35 @@ export type VentaOrderByWithRelationInput = {
   fecha?: Prisma.SortOrder
   productoId?: Prisma.SortOrder
   cantidad?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   producto?: Prisma.ProductoOrderByWithRelationInput
+  user?: Prisma.UserOrderByWithRelationInput
 }
 
 export type VentaWhereUniqueInput = Prisma.AtLeast<{
   id?: number
-  fecha_productoId?: Prisma.VentaFechaProductoIdCompoundUniqueInput
+  userId_fecha_productoId?: Prisma.VentaUserIdFechaProductoIdCompoundUniqueInput
   AND?: Prisma.VentaWhereInput | Prisma.VentaWhereInput[]
   OR?: Prisma.VentaWhereInput[]
   NOT?: Prisma.VentaWhereInput | Prisma.VentaWhereInput[]
   fecha?: Prisma.DateTimeFilter<"Venta"> | Date | string
   productoId?: Prisma.IntFilter<"Venta"> | number
   cantidad?: Prisma.IntFilter<"Venta"> | number
+  userId?: Prisma.StringFilter<"Venta"> | string
   createdAt?: Prisma.DateTimeFilter<"Venta"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Venta"> | Date | string
   producto?: Prisma.XOR<Prisma.ProductoScalarRelationFilter, Prisma.ProductoWhereInput>
-}, "id" | "fecha_productoId">
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+}, "id" | "userId_fecha_productoId">
 
 export type VentaOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   fecha?: Prisma.SortOrder
   productoId?: Prisma.SortOrder
   cantidad?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.VentaCountOrderByAggregateInput
@@ -281,6 +295,7 @@ export type VentaScalarWhereWithAggregatesInput = {
   fecha?: Prisma.DateTimeWithAggregatesFilter<"Venta"> | Date | string
   productoId?: Prisma.IntWithAggregatesFilter<"Venta"> | number
   cantidad?: Prisma.IntWithAggregatesFilter<"Venta"> | number
+  userId?: Prisma.StringWithAggregatesFilter<"Venta"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Venta"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Venta"> | Date | string
 }
@@ -291,6 +306,7 @@ export type VentaCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   producto: Prisma.ProductoCreateNestedOneWithoutVentasInput
+  user: Prisma.UserCreateNestedOneWithoutVentasInput
 }
 
 export type VentaUncheckedCreateInput = {
@@ -298,6 +314,7 @@ export type VentaUncheckedCreateInput = {
   fecha: Date | string
   productoId: number
   cantidad?: number
+  userId: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -308,6 +325,7 @@ export type VentaUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   producto?: Prisma.ProductoUpdateOneRequiredWithoutVentasNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutVentasNestedInput
 }
 
 export type VentaUncheckedUpdateInput = {
@@ -315,6 +333,7 @@ export type VentaUncheckedUpdateInput = {
   fecha?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   productoId?: Prisma.IntFieldUpdateOperationsInput | number
   cantidad?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -324,6 +343,7 @@ export type VentaCreateManyInput = {
   fecha: Date | string
   productoId: number
   cantidad?: number
+  userId: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -340,6 +360,7 @@ export type VentaUncheckedUpdateManyInput = {
   fecha?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   productoId?: Prisma.IntFieldUpdateOperationsInput | number
   cantidad?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -354,7 +375,8 @@ export type VentaOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type VentaFechaProductoIdCompoundUniqueInput = {
+export type VentaUserIdFechaProductoIdCompoundUniqueInput = {
+  userId: string
   fecha: Date | string
   productoId: number
 }
@@ -364,6 +386,7 @@ export type VentaCountOrderByAggregateInput = {
   fecha?: Prisma.SortOrder
   productoId?: Prisma.SortOrder
   cantidad?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -379,6 +402,7 @@ export type VentaMaxOrderByAggregateInput = {
   fecha?: Prisma.SortOrder
   productoId?: Prisma.SortOrder
   cantidad?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -388,6 +412,7 @@ export type VentaMinOrderByAggregateInput = {
   fecha?: Prisma.SortOrder
   productoId?: Prisma.SortOrder
   cantidad?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -396,6 +421,48 @@ export type VentaSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   productoId?: Prisma.SortOrder
   cantidad?: Prisma.SortOrder
+}
+
+export type VentaCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.VentaCreateWithoutUserInput, Prisma.VentaUncheckedCreateWithoutUserInput> | Prisma.VentaCreateWithoutUserInput[] | Prisma.VentaUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.VentaCreateOrConnectWithoutUserInput | Prisma.VentaCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.VentaCreateManyUserInputEnvelope
+  connect?: Prisma.VentaWhereUniqueInput | Prisma.VentaWhereUniqueInput[]
+}
+
+export type VentaUncheckedCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.VentaCreateWithoutUserInput, Prisma.VentaUncheckedCreateWithoutUserInput> | Prisma.VentaCreateWithoutUserInput[] | Prisma.VentaUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.VentaCreateOrConnectWithoutUserInput | Prisma.VentaCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.VentaCreateManyUserInputEnvelope
+  connect?: Prisma.VentaWhereUniqueInput | Prisma.VentaWhereUniqueInput[]
+}
+
+export type VentaUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.VentaCreateWithoutUserInput, Prisma.VentaUncheckedCreateWithoutUserInput> | Prisma.VentaCreateWithoutUserInput[] | Prisma.VentaUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.VentaCreateOrConnectWithoutUserInput | Prisma.VentaCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.VentaUpsertWithWhereUniqueWithoutUserInput | Prisma.VentaUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.VentaCreateManyUserInputEnvelope
+  set?: Prisma.VentaWhereUniqueInput | Prisma.VentaWhereUniqueInput[]
+  disconnect?: Prisma.VentaWhereUniqueInput | Prisma.VentaWhereUniqueInput[]
+  delete?: Prisma.VentaWhereUniqueInput | Prisma.VentaWhereUniqueInput[]
+  connect?: Prisma.VentaWhereUniqueInput | Prisma.VentaWhereUniqueInput[]
+  update?: Prisma.VentaUpdateWithWhereUniqueWithoutUserInput | Prisma.VentaUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.VentaUpdateManyWithWhereWithoutUserInput | Prisma.VentaUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.VentaScalarWhereInput | Prisma.VentaScalarWhereInput[]
+}
+
+export type VentaUncheckedUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.VentaCreateWithoutUserInput, Prisma.VentaUncheckedCreateWithoutUserInput> | Prisma.VentaCreateWithoutUserInput[] | Prisma.VentaUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.VentaCreateOrConnectWithoutUserInput | Prisma.VentaCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.VentaUpsertWithWhereUniqueWithoutUserInput | Prisma.VentaUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.VentaCreateManyUserInputEnvelope
+  set?: Prisma.VentaWhereUniqueInput | Prisma.VentaWhereUniqueInput[]
+  disconnect?: Prisma.VentaWhereUniqueInput | Prisma.VentaWhereUniqueInput[]
+  delete?: Prisma.VentaWhereUniqueInput | Prisma.VentaWhereUniqueInput[]
+  connect?: Prisma.VentaWhereUniqueInput | Prisma.VentaWhereUniqueInput[]
+  update?: Prisma.VentaUpdateWithWhereUniqueWithoutUserInput | Prisma.VentaUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.VentaUpdateManyWithWhereWithoutUserInput | Prisma.VentaUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.VentaScalarWhereInput | Prisma.VentaScalarWhereInput[]
 }
 
 export type VentaCreateNestedManyWithoutProductoInput = {
@@ -440,17 +507,75 @@ export type VentaUncheckedUpdateManyWithoutProductoNestedInput = {
   deleteMany?: Prisma.VentaScalarWhereInput | Prisma.VentaScalarWhereInput[]
 }
 
+export type VentaCreateWithoutUserInput = {
+  fecha: Date | string
+  cantidad?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  producto: Prisma.ProductoCreateNestedOneWithoutVentasInput
+}
+
+export type VentaUncheckedCreateWithoutUserInput = {
+  id?: number
+  fecha: Date | string
+  productoId: number
+  cantidad?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type VentaCreateOrConnectWithoutUserInput = {
+  where: Prisma.VentaWhereUniqueInput
+  create: Prisma.XOR<Prisma.VentaCreateWithoutUserInput, Prisma.VentaUncheckedCreateWithoutUserInput>
+}
+
+export type VentaCreateManyUserInputEnvelope = {
+  data: Prisma.VentaCreateManyUserInput | Prisma.VentaCreateManyUserInput[]
+  skipDuplicates?: boolean
+}
+
+export type VentaUpsertWithWhereUniqueWithoutUserInput = {
+  where: Prisma.VentaWhereUniqueInput
+  update: Prisma.XOR<Prisma.VentaUpdateWithoutUserInput, Prisma.VentaUncheckedUpdateWithoutUserInput>
+  create: Prisma.XOR<Prisma.VentaCreateWithoutUserInput, Prisma.VentaUncheckedCreateWithoutUserInput>
+}
+
+export type VentaUpdateWithWhereUniqueWithoutUserInput = {
+  where: Prisma.VentaWhereUniqueInput
+  data: Prisma.XOR<Prisma.VentaUpdateWithoutUserInput, Prisma.VentaUncheckedUpdateWithoutUserInput>
+}
+
+export type VentaUpdateManyWithWhereWithoutUserInput = {
+  where: Prisma.VentaScalarWhereInput
+  data: Prisma.XOR<Prisma.VentaUpdateManyMutationInput, Prisma.VentaUncheckedUpdateManyWithoutUserInput>
+}
+
+export type VentaScalarWhereInput = {
+  AND?: Prisma.VentaScalarWhereInput | Prisma.VentaScalarWhereInput[]
+  OR?: Prisma.VentaScalarWhereInput[]
+  NOT?: Prisma.VentaScalarWhereInput | Prisma.VentaScalarWhereInput[]
+  id?: Prisma.IntFilter<"Venta"> | number
+  fecha?: Prisma.DateTimeFilter<"Venta"> | Date | string
+  productoId?: Prisma.IntFilter<"Venta"> | number
+  cantidad?: Prisma.IntFilter<"Venta"> | number
+  userId?: Prisma.StringFilter<"Venta"> | string
+  createdAt?: Prisma.DateTimeFilter<"Venta"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Venta"> | Date | string
+}
+
 export type VentaCreateWithoutProductoInput = {
   fecha: Date | string
   cantidad?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutVentasInput
 }
 
 export type VentaUncheckedCreateWithoutProductoInput = {
   id?: number
   fecha: Date | string
   cantidad?: number
+  userId: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -481,22 +606,46 @@ export type VentaUpdateManyWithWhereWithoutProductoInput = {
   data: Prisma.XOR<Prisma.VentaUpdateManyMutationInput, Prisma.VentaUncheckedUpdateManyWithoutProductoInput>
 }
 
-export type VentaScalarWhereInput = {
-  AND?: Prisma.VentaScalarWhereInput | Prisma.VentaScalarWhereInput[]
-  OR?: Prisma.VentaScalarWhereInput[]
-  NOT?: Prisma.VentaScalarWhereInput | Prisma.VentaScalarWhereInput[]
-  id?: Prisma.IntFilter<"Venta"> | number
-  fecha?: Prisma.DateTimeFilter<"Venta"> | Date | string
-  productoId?: Prisma.IntFilter<"Venta"> | number
-  cantidad?: Prisma.IntFilter<"Venta"> | number
-  createdAt?: Prisma.DateTimeFilter<"Venta"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Venta"> | Date | string
+export type VentaCreateManyUserInput = {
+  id?: number
+  fecha: Date | string
+  productoId: number
+  cantidad?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type VentaUpdateWithoutUserInput = {
+  fecha?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  cantidad?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  producto?: Prisma.ProductoUpdateOneRequiredWithoutVentasNestedInput
+}
+
+export type VentaUncheckedUpdateWithoutUserInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  fecha?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  productoId?: Prisma.IntFieldUpdateOperationsInput | number
+  cantidad?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type VentaUncheckedUpdateManyWithoutUserInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  fecha?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  productoId?: Prisma.IntFieldUpdateOperationsInput | number
+  cantidad?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type VentaCreateManyProductoInput = {
   id?: number
   fecha: Date | string
   cantidad?: number
+  userId: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -506,12 +655,14 @@ export type VentaUpdateWithoutProductoInput = {
   cantidad?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutVentasNestedInput
 }
 
 export type VentaUncheckedUpdateWithoutProductoInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   fecha?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   cantidad?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -520,6 +671,7 @@ export type VentaUncheckedUpdateManyWithoutProductoInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   fecha?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   cantidad?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -531,9 +683,11 @@ export type VentaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   fecha?: boolean
   productoId?: boolean
   cantidad?: boolean
+  userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   producto?: boolean | Prisma.ProductoDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["venta"]>
 
 export type VentaSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -541,9 +695,11 @@ export type VentaSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   fecha?: boolean
   productoId?: boolean
   cantidad?: boolean
+  userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   producto?: boolean | Prisma.ProductoDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["venta"]>
 
 export type VentaSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -551,9 +707,11 @@ export type VentaSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   fecha?: boolean
   productoId?: boolean
   cantidad?: boolean
+  userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   producto?: boolean | Prisma.ProductoDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["venta"]>
 
 export type VentaSelectScalar = {
@@ -561,31 +719,37 @@ export type VentaSelectScalar = {
   fecha?: boolean
   productoId?: boolean
   cantidad?: boolean
+  userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type VentaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "fecha" | "productoId" | "cantidad" | "createdAt" | "updatedAt", ExtArgs["result"]["venta"]>
+export type VentaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "fecha" | "productoId" | "cantidad" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["venta"]>
 export type VentaInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   producto?: boolean | Prisma.ProductoDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type VentaIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   producto?: boolean | Prisma.ProductoDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type VentaIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   producto?: boolean | Prisma.ProductoDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
 export type $VentaPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Venta"
   objects: {
     producto: Prisma.$ProductoPayload<ExtArgs>
+    user: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     fecha: Date
     productoId: number
     cantidad: number
+    userId: string
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["venta"]>
@@ -983,6 +1147,7 @@ readonly fields: VentaFieldRefs;
 export interface Prisma__VentaClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   producto<T extends Prisma.ProductoDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProductoDefaultArgs<ExtArgs>>): Prisma.Prisma__ProductoClient<runtime.Types.Result.GetResult<Prisma.$ProductoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1016,6 +1181,7 @@ export interface VentaFieldRefs {
   readonly fecha: Prisma.FieldRef<"Venta", 'DateTime'>
   readonly productoId: Prisma.FieldRef<"Venta", 'Int'>
   readonly cantidad: Prisma.FieldRef<"Venta", 'Int'>
+  readonly userId: Prisma.FieldRef<"Venta", 'String'>
   readonly createdAt: Prisma.FieldRef<"Venta", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Venta", 'DateTime'>
 }

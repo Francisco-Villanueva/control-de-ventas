@@ -1,8 +1,11 @@
 import prisma from "@/lib/prisma";
 
-export async function getCategorias(activoOnly = false) {
+export async function getCategorias(userId: string, activoOnly = false) {
   return await prisma.categoria.findMany({
-    where: activoOnly ? { activo: true } : undefined,
+    where: {
+      userId,
+      ...(activoOnly ? { activo: true } : {}),
+    },
     include: {
       _count: {
         select: { productos: true },
@@ -12,9 +15,9 @@ export async function getCategorias(activoOnly = false) {
   });
 }
 
-export async function getCategoriaById(id: number) {
-  return await prisma.categoria.findUnique({
-    where: { id },
+export async function getCategoriaById(userId: string, id: number) {
+  const categoria = await prisma.categoria.findFirst({
+    where: { id, userId },
     include: {
       productos: true,
       _count: {
@@ -22,14 +25,24 @@ export async function getCategoriaById(id: number) {
       },
     },
   });
+
+  if (!categoria) {
+    throw new Error("Categoría no encontrada");
+  }
+
+  return categoria;
 }
 
-export async function createCategoria(data: {
-  nombre: string;
-  orden?: number;
-}) {
+export async function createCategoria(
+  userId: string,
+  data: {
+    nombre: string;
+    orden?: number;
+  },
+) {
   return await prisma.categoria.create({
     data: {
+      userId,
       nombre: data.nombre,
       orden: data.orden || 0,
       activo: true,
@@ -38,6 +51,7 @@ export async function createCategoria(data: {
 }
 
 export async function updateCategoria(
+  userId: string,
   id: number,
   data: {
     nombre?: string;
@@ -45,24 +59,20 @@ export async function updateCategoria(
     activo?: boolean;
   },
 ) {
+  // Validar ownership
+  await getCategoriaById(userId, id);
+
   return await prisma.categoria.update({
     where: { id },
     data,
   });
 }
 
-export async function deleteCategoria(id: number) {
-  // Verificar si tiene productos
-  const categoria = await prisma.categoria.findUnique({
-    where: { id },
-    include: {
-      _count: {
-        select: { productos: true },
-      },
-    },
-  });
+export async function deleteCategoria(userId: string, id: number) {
+  // Validar ownership y verificar si tiene productos
+  const categoria = await getCategoriaById(userId, id);
 
-  if (categoria && categoria._count.productos > 0) {
+  if (categoria._count.productos > 0) {
     throw new Error(
       "No se puede eliminar una categoría con productos asociados",
     );

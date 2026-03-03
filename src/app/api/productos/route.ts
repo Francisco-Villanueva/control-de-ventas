@@ -18,10 +18,11 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 })
     }
 
+    const userId = session.user.id
     const { searchParams } = new URL(request.url)
     const activoOnly = searchParams.get("activo") === "true"
 
-    const productos = await getProductos(activoOnly)
+    const productos = await getProductos(userId, activoOnly)
     return NextResponse.json(productos)
   } catch (error) {
     console.error("Error al obtener productos:", error)
@@ -39,10 +40,11 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 })
     }
 
+    const userId = session.user.id
     const body = await request.json()
     const validatedData = productoSchema.parse(body)
 
-    const producto = await createProducto(validatedData)
+    const producto = await createProducto(userId, validatedData)
     return NextResponse.json(producto, { status: 201 })
   } catch (error) {
     if (error instanceof z.ZodError) {

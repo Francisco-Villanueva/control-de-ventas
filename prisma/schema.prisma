@@ -9,7 +9,7 @@ datasource db {
   provider = "postgresql"
 }
 
-// Usuarios para autenticación
+// Usuarios para autenticación (cada usuario = un negocio/tenant)
 model User {
   id        String   @id @default(cuid())
   email     String   @unique
@@ -17,17 +17,29 @@ model User {
   password  String // Hashed con bcrypt
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // Relaciones multi-tenant
+  categorias    Categoria[]
+  productos     Producto[]
+  ventas        Venta[]
+  configuracion Configuracion[]
 }
 
 // Categorías de productos
 model Categoria {
   id        Int        @id @default(autoincrement())
-  nombre    String     @unique
+  nombre    String
   orden     Int        @default(0)
   activo    Boolean    @default(true)
+  userId    String
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   productos Producto[]
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
+
+  @@unique([userId, nombre])
+  @@index([userId])
+  @@index([userId, activo])
 }
 
 // Productos
@@ -40,12 +52,15 @@ model Producto {
   costo       Decimal    @default(0) @db.Decimal(10, 2)
   activo      Boolean    @default(true)
   orden       Int        @default(0)
+  userId      String
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   ventas      Venta[]
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
 
-  @@index([categoriaId])
-  @@index([activo])
+  @@index([userId])
+  @@index([userId, categoriaId])
+  @@index([userId, activo])
 }
 
 // Ventas diarias
@@ -55,19 +70,26 @@ model Venta {
   productoId Int
   producto   Producto @relation(fields: [productoId], references: [id], onDelete: Cascade)
   cantidad   Int      @default(0)
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  @@unique([fecha, productoId])
-  @@index([fecha])
-  @@index([productoId])
+  @@unique([userId, fecha, productoId])
+  @@index([userId, fecha])
+  @@index([userId, productoId])
 }
 
 // Configuración general de la app
 model Configuracion {
   id        Int      @id @default(autoincrement())
-  clave     String   @unique
+  clave     String
   valor     String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@unique([userId, clave])
+  @@index([userId])
 }

@@ -834,6 +834,7 @@ export const CategoriaScalarFieldEnum = {
   nombre: 'nombre',
   orden: 'orden',
   activo: 'activo',
+  userId: 'userId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -849,6 +850,7 @@ export const ProductoScalarFieldEnum = {
   costo: 'costo',
   activo: 'activo',
   orden: 'orden',
+  userId: 'userId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -861,6 +863,7 @@ export const VentaScalarFieldEnum = {
   fecha: 'fecha',
   productoId: 'productoId',
   cantidad: 'cantidad',
+  userId: 'userId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -872,6 +875,7 @@ export const ConfiguracionScalarFieldEnum = {
   id: 'id',
   clave: 'clave',
   valor: 'valor',
+  userId: 'userId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

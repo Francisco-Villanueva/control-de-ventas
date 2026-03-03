@@ -1,8 +1,11 @@
 import prisma from "@/lib/prisma";
 
-export async function getProductos(activoOnly = false) {
+export async function getProductos(userId: string, activoOnly = false) {
   return await prisma.producto.findMany({
-    where: activoOnly ? { activo: true } : undefined,
+    where: {
+      userId,
+      ...(activoOnly ? { activo: true } : {}),
+    },
     include: {
       categoria: true,
     },
@@ -10,24 +13,34 @@ export async function getProductos(activoOnly = false) {
   });
 }
 
-export async function getProductoById(id: number) {
-  return await prisma.producto.findUnique({
-    where: { id },
+export async function getProductoById(userId: string, id: number) {
+  const producto = await prisma.producto.findFirst({
+    where: { id, userId },
     include: {
       categoria: true,
     },
   });
+
+  if (!producto) {
+    throw new Error("Producto no encontrado");
+  }
+
+  return producto;
 }
 
-export async function createProducto(data: {
-  nombre: string;
-  categoriaId?: number;
-  precio: number;
-  costo: number;
-  orden?: number;
-}) {
+export async function createProducto(
+  userId: string,
+  data: {
+    nombre: string;
+    categoriaId?: number;
+    precio: number;
+    costo: number;
+    orden?: number;
+  },
+) {
   return await prisma.producto.create({
     data: {
+      userId,
       nombre: data.nombre,
       categoriaId: data.categoriaId,
       precio: data.precio,
@@ -42,6 +55,7 @@ export async function createProducto(data: {
 }
 
 export async function updateProducto(
+  userId: string,
   id: number,
   data: {
     nombre?: string;
@@ -52,6 +66,9 @@ export async function updateProducto(
     activo?: boolean;
   },
 ) {
+  // Validar ownership
+  await getProductoById(userId, id);
+
   return await prisma.producto.update({
     where: { id },
     data,
@@ -61,7 +78,10 @@ export async function updateProducto(
   });
 }
 
-export async function deleteProducto(id: number) {
+export async function deleteProducto(userId: string, id: number) {
+  // Validar ownership
+  await getProductoById(userId, id);
+
   // Soft delete
   return await prisma.producto.update({
     where: { id },

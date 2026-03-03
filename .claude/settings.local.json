@@ -3,7 +3,10 @@
     "allow": [
       "Bash(cat:*)",
       "Bash(xargs grep:*)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(wc:*)",
+      "Bash(npx prisma:*)",
+      "Bash(PRISMA_USER_CONSENT_FOR_DANGEROUS_AI_ACTION=\"si\" npx prisma:*)"
     ]
   }
 }

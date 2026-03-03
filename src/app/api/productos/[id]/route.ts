@@ -26,18 +26,19 @@ export async function GET(
       return NextResponse.json({ error: "No autorizado" }, { status: 401 })
     }
 
+    const userId = session.user.id
     const { id } = await params
-    const producto = await getProductoById(parseInt(id))
+    const producto = await getProductoById(userId, parseInt(id))
 
-    if (!producto) {
+    return NextResponse.json(producto)
+  } catch (error: any) {
+    if (error.message === "Producto no encontrado") {
       return NextResponse.json(
         { error: "Producto no encontrado" },
         { status: 404 }
       )
     }
 
-    return NextResponse.json(producto)
-  } catch (error) {
     console.error("Error al obtener producto:", error)
     return NextResponse.json(
       { error: "Error al obtener producto" },
@@ -56,17 +57,25 @@ export async function PUT(
       return NextResponse.json({ error: "No autorizado" }, { status: 401 })
     }
 
+    const userId = session.user.id
     const { id } = await params
     const body = await request.json()
     const validatedData = updateProductoSchema.parse(body)
 
-    const producto = await updateProducto(parseInt(id), validatedData)
+    const producto = await updateProducto(userId, parseInt(id), validatedData)
     return NextResponse.json(producto)
-  } catch (error) {
+  } catch (error: any) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { error: "Datos inválidos", details: error.issues },
         { status: 400 }
+      )
+    }
+
+    if (error.message === "Producto no encontrado") {
+      return NextResponse.json(
+        { error: "Producto no encontrado" },
+        { status: 404 }
       )
     }
 
@@ -88,10 +97,18 @@ export async function DELETE(
       return NextResponse.json({ error: "No autorizado" }, { status: 401 })
     }
 
+    const userId = session.user.id
     const { id } = await params
-    await deleteProducto(parseInt(id))
+    await deleteProducto(userId, parseInt(id))
     return NextResponse.json({ message: "Producto eliminado" })
-  } catch (error) {
+  } catch (error: any) {
+    if (error.message === "Producto no encontrado") {
+      return NextResponse.json(
+        { error: "Producto no encontrado" },
+        { status: 404 }
+      )
+    }
+
     console.error("Error al eliminar producto:", error)
     return NextResponse.json(
       { error: "Error al eliminar producto" },
