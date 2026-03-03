@@ -1,11 +1,12 @@
 import prisma from "@/lib/prisma";
 
-import { startOfDay, endOfDay, subDays } from "date-fns";
+import { subDays } from "date-fns";
+import { toDateString, toUTCDate } from "@/lib/dateUtils";
 
-export async function getVentasByFecha(fecha: Date) {
+export async function getVentasByFecha(fechaStr: string) {
   return await prisma.venta.findMany({
     where: {
-      fecha: startOfDay(fecha),
+      fecha: toUTCDate(fechaStr),
     },
     include: {
       producto: {
@@ -23,12 +24,13 @@ export async function getVentasByFecha(fecha: Date) {
 }
 
 export async function getVentasRecientes(dias = 7) {
-  const fechaInicio = subDays(new Date(), dias);
+  const fechaInicioDate = subDays(new Date(), dias);
+  const fechaInicio = toDateString(fechaInicioDate);
 
   return await prisma.venta.findMany({
     where: {
       fecha: {
-        gte: startOfDay(fechaInicio),
+        gte: toUTCDate(fechaInicio),
       },
     },
     include: {
@@ -45,14 +47,16 @@ export async function getVentasRecientes(dias = 7) {
 }
 
 export async function createOrUpdateVenta(data: {
-  fecha: Date;
+  fecha: string;
   productoId: number;
   cantidad: number;
 }) {
+  const fechaUTC = toUTCDate(data.fecha);
+
   return await prisma.venta.upsert({
     where: {
       fecha_productoId: {
-        fecha: startOfDay(data.fecha),
+        fecha: fechaUTC,
         productoId: data.productoId,
       },
     },
@@ -60,7 +64,7 @@ export async function createOrUpdateVenta(data: {
       cantidad: data.cantidad,
     },
     create: {
-      fecha: startOfDay(data.fecha),
+      fecha: fechaUTC,
       productoId: data.productoId,
       cantidad: data.cantidad,
     },
@@ -75,7 +79,7 @@ export async function createOrUpdateVenta(data: {
 }
 
 export async function createOrUpdateVentasBatch(data: {
-  fecha: Date;
+  fecha: string;
   ventas: Array<{ productoId: number; cantidad: number }>;
 }) {
   const results = [];
@@ -92,11 +96,11 @@ export async function createOrUpdateVentasBatch(data: {
   return results;
 }
 
-export async function deleteVenta(fecha: Date, productoId: number) {
+export async function deleteVenta(fechaStr: string, productoId: number) {
   return await prisma.venta.delete({
     where: {
       fecha_productoId: {
-        fecha: startOfDay(fecha),
+        fecha: toUTCDate(fechaStr),
         productoId,
       },
     },

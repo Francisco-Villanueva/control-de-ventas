@@ -6,10 +6,10 @@ import {
 } from "@/lib/queries/ventas"
 import { auth } from "@/lib/auth"
 import { z } from "zod"
-import { startOfDay } from "date-fns"
+import { getTodayString } from "@/lib/dateUtils"
 
 const ventaBatchSchema = z.object({
-  fecha: z.string().transform((val) => new Date(val)),
+  fecha: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Fecha debe ser YYYY-MM-DD"),
   ventas: z.array(
     z.object({
       productoId: z.number(),
@@ -30,7 +30,7 @@ export async function GET(request: Request) {
     const dias = searchParams.get("dias")
 
     if (fecha) {
-      const ventas = await getVentasByFecha(new Date(fecha))
+      const ventas = await getVentasByFecha(fecha)
       return NextResponse.json(ventas)
     }
 
@@ -62,8 +62,8 @@ export async function POST(request: Request) {
     const validatedData = ventaBatchSchema.parse(body)
 
     // Verificar que la fecha no sea futura
-    const hoy = startOfDay(new Date())
-    const fechaVenta = startOfDay(validatedData.fecha)
+    const hoy = getTodayString()
+    const fechaVenta = validatedData.fecha
 
     if (fechaVenta > hoy) {
       return NextResponse.json(

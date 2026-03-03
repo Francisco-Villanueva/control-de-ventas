@@ -1,15 +1,16 @@
 import { NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
+import { getTodayString, toUTCDate, fromPrismaDate, fromDateString } from "@/lib/dateUtils"
 
 export async function GET() {
   try {
-    const hoy = new Date()
-    hoy.setHours(0, 0, 0, 0)
+    const hoyStr = getTodayString()
+    const hoyUTC = toUTCDate(hoyStr)
 
     // Ventas de hoy
     const ventasHoy = await prisma.venta.findMany({
       where: {
-        fecha: hoy,
+        fecha: hoyUTC,
       },
       include: {
         producto: true,
@@ -29,7 +30,10 @@ export async function GET() {
       : null
 
     // Ventas del mes actual
-    const inicioMes = new Date(hoy.getFullYear(), hoy.getMonth(), 1)
+    const ahora = new Date()
+    const inicioMesStr = `${ahora.getFullYear()}-${String(ahora.getMonth() + 1).padStart(2, '0')}-01`
+    const inicioMes = toUTCDate(inicioMesStr)
+
     const ventasMes = await prisma.venta.findMany({
       where: {
         fecha: {
@@ -48,11 +52,11 @@ export async function GET() {
     )
 
     // Promedio del día de la semana actual
-    const diaSemana = hoy.getDay()
+    const diaSemana = new Date().getDay()
     const ventasDiaSemana = await prisma.venta.findMany({
       where: {
         fecha: {
-          lt: hoy,
+          lt: hoyUTC,
         },
       },
       include: {
@@ -62,13 +66,14 @@ export async function GET() {
 
     // Filtrar solo las ventas del mismo día de la semana
     const ventasMismoDia = ventasDiaSemana.filter((v) => {
-      const fecha = new Date(v.fecha)
+      const fechaStr = fromPrismaDate(v.fecha)
+      const fecha = fromDateString(fechaStr)
       return fecha.getDay() === diaSemana
     })
 
     // Agrupar por fecha para calcular promedio
     const ventasPorFecha = ventasMismoDia.reduce((acc, v) => {
-      const fechaKey = v.fecha.toISOString().split("T")[0]
+      const fechaKey = fromPrismaDate(v.fecha)
       if (!acc[fechaKey]) {
         acc[fechaKey] = 0
       }

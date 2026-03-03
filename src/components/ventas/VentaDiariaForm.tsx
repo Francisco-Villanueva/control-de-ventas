@@ -3,9 +3,11 @@
 import { useState, useEffect } from "react"
 import { useProductos } from "@/hooks/useProductos"
 import { useVentas, useGuardarVentas } from "@/hooks/useVentas"
-import { format } from "date-fns"
+import { toDateString } from "@/lib/dateUtils"
 import { toast } from "sonner"
-import { Save, Loader2 } from "lucide-react"
+import { Save, Loader2, Plus, Minus } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
 
 interface VentaDiariaFormProps {
   fecha: Date
@@ -69,7 +71,7 @@ export function VentaDiariaForm({ fecha }: VentaDiariaFormProps) {
 
     try {
       await guardarVentas.mutateAsync({
-        fecha: format(fecha, "yyyy-MM-dd"),
+        fecha: toDateString(fecha),
         ventas,
       })
 
@@ -81,17 +83,23 @@ export function VentaDiariaForm({ fecha }: VentaDiariaFormProps) {
 
   if (loadingProductos || loadingVentas) {
     return (
-      <div className="flex items-center justify-center py-12">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+      <div className="flex items-center justify-center py-16">
+        <Loader2 className="h-10 w-10 animate-spin text-[#FF6B35]" />
       </div>
     )
   }
 
   if (!productos || productos.length === 0) {
     return (
-      <div className="text-center py-12">
-        <p className="text-gray-600 dark:text-gray-400">
-          No hay productos activos. Por favor, crea productos primero en la sección de configuración.
+      <div className="text-center py-16 bg-white dark:bg-[#1A1A2E] rounded-2xl shadow-md border-2 border-[#E5E9F2] dark:border-[#2D2D44] p-8">
+        <div className="h-16 w-16 bg-gradient-to-br from-[#FF6B35] to-[#FF8C61] rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+          <Save className="h-8 w-8 text-white" />
+        </div>
+        <p className="text-[#1A1A2E] dark:text-white font-semibold text-lg mb-2">
+          No hay productos activos
+        </p>
+        <p className="text-sm text-[#6B7A94] dark:text-[#8E92A0]">
+          Por favor, crea productos primero en la sección de configuración.
         </p>
       </div>
     )
@@ -115,77 +123,113 @@ export function VentaDiariaForm({ fecha }: VentaDiariaFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Resumen rápido */}
-      <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-        <p className="text-sm text-blue-800 dark:text-blue-200">
-          <strong>Total unidades:</strong> {totalUnidades}
-        </p>
+      <div className="bg-gradient-to-r from-[#FF6B35]/10 to-transparent border-2 border-[#FF6B35]/20 rounded-xl p-5 flex items-center justify-between">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-wider text-[#6B7A94] dark:text-[#8E92A0] mb-1">
+            Total unidades
+          </p>
+          <p className="text-3xl font-bold text-[#FF6B35]">
+            {totalUnidades}
+          </p>
+        </div>
+        <Badge variant="default" className="text-base px-5 py-2">
+          {Object.values(cantidades).filter((c: number) => c > 0).length} productos
+        </Badge>
       </div>
 
       {/* Productos agrupados por categoría */}
-      {Object.entries(productosPorCategoria).map(([categoria, prods]: [string, any]) => (
-        <div
-          key={categoria}
-          className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden"
-        >
-          <div className="bg-gray-50 dark:bg-gray-700 px-4 py-3 border-b border-gray-200 dark:border-gray-600">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-              {categoria}
-            </h3>
-          </div>
+      <div className="space-y-6">
+        {Object.entries(productosPorCategoria).map(([categoria, prods]: [string, any]) => (
+          <div
+            key={categoria}
+            className="bg-white dark:bg-[#1A1A2E] rounded-2xl shadow-md border-2 border-[#E5E9F2] dark:border-[#2D2D44] overflow-hidden"
+          >
+            <div className="bg-gradient-to-r from-[#FF6B35]/5 to-transparent px-6 py-4 border-b-2 border-[#E5E9F2] dark:border-[#2D2D44]">
+              <Badge variant="outline" className="text-base font-bold">
+                {categoria}
+              </Badge>
+            </div>
 
-          <div className="divide-y divide-gray-200 dark:divide-gray-700">
-            {prods.map((producto: any) => (
-              <div
-                key={producto.id}
-                className="px-4 py-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
-              >
-                <div className="flex items-center justify-between gap-4">
-                  <div className="flex-1">
-                    <label
-                      htmlFor={`producto-${producto.id}`}
-                      className="block text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      {producto.nombre}
-                    </label>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                      ${producto.precio} c/u
-                    </p>
+            <div className="p-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {prods.map((producto: any) => (
+                  <div
+                    key={producto.id}
+                    className="flex items-center justify-between gap-4 p-4 rounded-xl border-2 border-[#E5E9F2] dark:border-[#2D2D44] hover:border-[#FF6B35]/30 dark:hover:border-[#FF6B35]/30 transition-all duration-200 bg-gradient-to-r from-transparent to-[#FF6B35]/5"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <label
+                        htmlFor={`producto-${producto.id}`}
+                        className="block text-sm font-bold text-[#1A1A2E] dark:text-white mb-1 cursor-pointer truncate"
+                      >
+                        {producto.nombre}
+                      </label>
+                      <p className="text-xs text-[#6B7A94] dark:text-[#8E92A0]">
+                        ${producto.precio} c/u
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const currentValue = cantidades[producto.id] || 0
+                          if (currentValue > 0) {
+                            handleCantidadChange(producto.id, String(currentValue - 1))
+                          }
+                        }}
+                        className="h-9 w-9 rounded-lg bg-[#F8F9FC] dark:bg-[#252536] hover:bg-[#E5E9F2] dark:hover:bg-[#2D2D44] flex items-center justify-center transition-colors flex-shrink-0"
+                      >
+                        <Minus className="h-4 w-4 text-[#6B7A94]" />
+                      </button>
+                      <input
+                        type="number"
+                        id={`producto-${producto.id}`}
+                        min="0"
+                        value={cantidades[producto.id] || 0}
+                        onChange={(e) =>
+                          handleCantidadChange(producto.id, e.target.value)
+                        }
+                        className="w-20 px-3 py-2 text-center text-lg font-bold border-2 border-[#E5E9F2] dark:border-[#2D2D44] rounded-lg focus:outline-none focus:border-[#FF6B35] focus:ring-4 focus:ring-[#FF6B35]/10 bg-white dark:bg-[#1A1A2E] text-[#1A1A2E] dark:text-white transition-all duration-200 flex-shrink-0"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const currentValue = cantidades[producto.id] || 0
+                          handleCantidadChange(producto.id, String(currentValue + 1))
+                        }}
+                        className="h-9 w-9 rounded-lg bg-[#FF6B35] hover:bg-[#E85A2A] flex items-center justify-center transition-colors shadow-md flex-shrink-0"
+                      >
+                        <Plus className="h-4 w-4 text-white" />
+                      </button>
+                    </div>
                   </div>
-                  <input
-                    type="number"
-                    id={`producto-${producto.id}`}
-                    min="0"
-                    value={cantidades[producto.id] || 0}
-                    onChange={(e) =>
-                      handleCantidadChange(producto.id, e.target.value)
-                    }
-                    className="w-24 px-3 py-2 text-center border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white text-lg font-semibold"
-                  />
-                </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
 
       {/* Botón guardar */}
-      <button
+      <Button
         type="submit"
         disabled={guardarVentas.isPending}
-        className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium py-3 px-4 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        variant="gradient"
+        size="xl"
+        className="w-full"
       >
         {guardarVentas.isPending ? (
           <>
-            <Loader2 className="h-5 w-5 animate-spin" />
+            <Loader2 className="h-6 w-6 animate-spin" />
             Guardando...
           </>
         ) : (
           <>
-            <Save className="h-5 w-5" />
+            <Save className="h-6 w-6" />
             Guardar Ventas
           </>
         )}
-      </button>
+      </Button>
     </form>
   )
 }

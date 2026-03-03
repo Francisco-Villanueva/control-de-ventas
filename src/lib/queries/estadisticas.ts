@@ -7,6 +7,7 @@ import {
   endOfYear,
   format,
 } from "date-fns";
+import { fromPrismaDate, fromDateString, toUTCDate } from "@/lib/dateUtils";
 
 export async function getPromediosPorDiaSemana() {
   // Obtener todas las ventas
@@ -23,7 +24,8 @@ export async function getPromediosPorDiaSemana() {
   > = {};
 
   ventas.forEach((venta) => {
-    const fecha = new Date(venta.fecha);
+    const fechaStr = fromPrismaDate(venta.fecha);
+    const fecha = fromDateString(fechaStr);
     const diaSemana = fecha.getDay(); // 0 = Domingo, 6 = Sábado
 
     if (!promedios[diaSemana]) {
@@ -176,7 +178,8 @@ export async function getResumenAnual(fecha: Date) {
   > = {};
 
   ventas.forEach((venta) => {
-    const mes = format(new Date(venta.fecha), "yyyy-MM");
+    const fechaStr = fromPrismaDate(venta.fecha);
+    const mes = fechaStr.substring(0, 7); // "YYYY-MM"
 
     if (!resumenPorMes[mes]) {
       resumenPorMes[mes] = {
@@ -200,10 +203,10 @@ export async function getResumenAnual(fecha: Date) {
   );
 }
 
-export async function getVentasDelDia(fecha: Date) {
+export async function getVentasDelDia(fechaStr: string) {
   const ventas = await prisma.venta.findMany({
     where: {
-      fecha: startOfMonth(fecha),
+      fecha: toUTCDate(fechaStr),
     },
     include: {
       producto: true,
@@ -217,7 +220,7 @@ export async function getVentasDelDia(fecha: Date) {
   );
 
   return {
-    fecha: format(fecha, "yyyy-MM-dd"),
+    fecha: fechaStr,
     totalCantidad,
     totalIngresos,
     ventas,

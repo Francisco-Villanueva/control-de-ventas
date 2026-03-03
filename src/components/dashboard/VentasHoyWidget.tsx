@@ -4,12 +4,15 @@ import { useState, useEffect } from "react"
 import { useProductos } from "@/hooks/useProductos"
 import { useVentas, useGuardarVentas } from "@/hooks/useVentas"
 import { toast } from "sonner"
-import { Save, Loader2, CheckCircle2 } from "lucide-react"
-import { startOfDay, format } from "date-fns"
+import { Save, Loader2, CheckCircle2, Plus, Minus } from "lucide-react"
+import { format } from "date-fns"
 import { es } from "date-fns/locale"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { getTodayString, fromDateString } from "@/lib/dateUtils"
 
 export function VentasHoyWidget() {
-  const hoy = startOfDay(new Date())
+  const hoy = fromDateString(getTodayString())
   const { data: productos, isLoading: isLoadingProductos } = useProductos(true)
   const { data: ventasExistentes, isLoading: isLoadingVentas } = useVentas(hoy)
   const guardarVentas = useGuardarVentas()
@@ -50,7 +53,7 @@ export function VentasHoyWidget() {
 
     try {
       await guardarVentas.mutateAsync({
-        fecha: format(hoy, "yyyy-MM-dd"),
+        fecha: getTodayString(),
         ventas,
       })
       toast.success("Ventas registradas correctamente")
@@ -64,12 +67,12 @@ export function VentasHoyWidget() {
 
   if (isLoadingProductos || isLoadingVentas) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+      <div className="bg-white dark:bg-[#1A1A2E] rounded-2xl shadow-md border-2 border-[#E5E9F2] dark:border-[#2D2D44] p-6">
         <div className="animate-pulse">
-          <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-4"></div>
-          <div className="space-y-3">
+          <div className="h-8 bg-[#F8F9FC] dark:bg-[#252536] rounded-lg w-1/2 mb-6"></div>
+          <div className="space-y-4">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-12 bg-gray-200 dark:bg-gray-700 rounded"></div>
+              <div key={i} className="h-16 bg-[#F8F9FC] dark:bg-[#252536] rounded-xl"></div>
             ))}
           </div>
         </div>
@@ -88,66 +91,94 @@ export function VentasHoyWidget() {
   }, {})
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+    <div className="bg-white dark:bg-[#1A1A2E] rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 border-2 border-[#E5E9F2] dark:border-[#2D2D44] p-6">
       {/* Header */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+          <h2 className="text-xl font-bold text-[#1A1A2E] dark:text-white mb-1">
             Registro Rápido
           </h2>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
+          <p className="text-sm text-[#6B7A94] dark:text-[#8E92A0]">
             {format(hoy, "EEEE, d 'de' MMMM", { locale: es })}
           </p>
         </div>
         {hayVentas && (
-          <div className="flex items-center gap-2 bg-blue-50 dark:bg-blue-900/30 px-3 py-1.5 rounded-full">
-            <CheckCircle2 className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-            <span className="text-sm font-medium text-blue-900 dark:text-blue-200">
-              {totalUnidades} unidades
-            </span>
-          </div>
+          <Badge variant="secondary" className="flex items-center gap-1.5 px-4 py-2">
+            <CheckCircle2 className="h-4 w-4" />
+            {totalUnidades} unidades
+          </Badge>
         )}
       </div>
 
-      {/* Formulario simplificado */}
-      <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2">
+      {/* Formulario mejorado */}
+      <div className="space-y-5 max-h-[450px] overflow-y-auto pr-2 custom-scrollbar">
         {productosPorCategoria &&
           Object.entries(productosPorCategoria).map(([categoria, prods]: [string, any]) => (
-            <div key={categoria} className="space-y-2">
-              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 sticky top-0 bg-white dark:bg-gray-800 py-1">
-                {categoria}
-              </h3>
-              {prods.map((producto: any) => (
-                <div
-                  key={producto.id}
-                  className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 transition-colors"
-                >
-                  <label
-                    htmlFor={`producto-${producto.id}`}
-                    className="flex-1 text-sm font-medium text-gray-900 dark:text-white cursor-pointer"
+            <div key={categoria} className="space-y-3">
+              <div className="sticky top-0 bg-white dark:bg-[#1A1A2E] py-2 z-10">
+                <Badge variant="outline" className="font-semibold">
+                  {categoria}
+                </Badge>
+              </div>
+              <div className="grid grid-cols-1 gap-3">
+                {prods.map((producto: any) => (
+                  <div
+                    key={producto.id}
+                    className="flex items-center gap-4 p-4 rounded-xl border-2 border-[#E5E9F2] dark:border-[#2D2D44] hover:border-[#FF6B35]/30 dark:hover:border-[#FF6B35]/30 transition-all duration-200 bg-gradient-to-r from-transparent to-[#FF6B35]/5"
                   >
-                    {producto.nombre}
-                  </label>
-                  <input
-                    id={`producto-${producto.id}`}
-                    type="number"
-                    min="0"
-                    value={cantidades[producto.id] || ""}
-                    onChange={(e) => handleCantidadChange(producto.id, e.target.value)}
-                    className="w-20 px-3 py-2 text-center border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
-                    placeholder="0"
-                  />
-                </div>
-              ))}
+                    <label
+                      htmlFor={`producto-${producto.id}`}
+                      className="flex-1 text-sm font-semibold text-[#1A1A2E] dark:text-white cursor-pointer"
+                    >
+                      {producto.nombre}
+                    </label>
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const currentValue = cantidades[producto.id] || 0
+                          if (currentValue > 0) {
+                            handleCantidadChange(producto.id, String(currentValue - 1))
+                          }
+                        }}
+                        className="h-8 w-8 rounded-lg bg-[#F8F9FC] dark:bg-[#252536] hover:bg-[#E5E9F2] dark:hover:bg-[#2D2D44] flex items-center justify-center transition-colors"
+                      >
+                        <Minus className="h-4 w-4 text-[#6B7A94]" />
+                      </button>
+                      <input
+                        id={`producto-${producto.id}`}
+                        type="number"
+                        min="0"
+                        value={cantidades[producto.id] || ""}
+                        onChange={(e) => handleCantidadChange(producto.id, e.target.value)}
+                        className="w-16 px-3 py-2 text-center text-base font-bold border-2 border-[#E5E9F2] dark:border-[#2D2D44] rounded-lg focus:outline-none focus:border-[#FF6B35] focus:ring-4 focus:ring-[#FF6B35]/10 bg-white dark:bg-[#1A1A2E] text-[#1A1A2E] dark:text-white transition-all duration-200"
+                        placeholder="0"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const currentValue = cantidades[producto.id] || 0
+                          handleCantidadChange(producto.id, String(currentValue + 1))
+                        }}
+                        className="h-8 w-8 rounded-lg bg-[#FF6B35] hover:bg-[#E85A2A] flex items-center justify-center transition-colors shadow-md"
+                      >
+                        <Plus className="h-4 w-4 text-white" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           ))}
       </div>
 
       {/* Botón guardar */}
-      <button
+      <Button
         onClick={handleGuardar}
         disabled={!hayVentas || guardarVentas.isPending}
-        className="w-full mt-4 flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white rounded-md font-medium transition-colors"
+        variant="gradient"
+        size="lg"
+        className="w-full mt-6"
       >
         {guardarVentas.isPending ? (
           <>
@@ -160,7 +191,7 @@ export function VentasHoyWidget() {
             Guardar Ventas de Hoy
           </>
         )}
-      </button>
+      </Button>
     </div>
   )
 }
