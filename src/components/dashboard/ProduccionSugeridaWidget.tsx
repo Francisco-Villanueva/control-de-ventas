@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import { usePrediccionProduccion } from "@/hooks/useEstadisticas"
-import { Loader2, Lightbulb, TrendingUp, Calendar } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
+import { usePrediccionProduccion } from "@/hooks/useEstadisticas";
+import { Loader2, Lightbulb, TrendingUp, Calendar } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 export function ProduccionSugeridaWidget() {
-  const { data, isLoading } = usePrediccionProduccion()
+  const { data, isLoading } = usePrediccionProduccion();
 
   if (isLoading) {
     return (
@@ -14,7 +14,7 @@ export function ProduccionSugeridaWidget() {
           <Loader2 className="h-10 w-10 animate-spin text-[#00C9A7]" />
         </div>
       </div>
-    )
+    );
   }
 
   if (!data || data.predicciones.length === 0) {
@@ -32,7 +32,7 @@ export function ProduccionSugeridaWidget() {
           </p>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -47,7 +47,10 @@ export function ProduccionSugeridaWidget() {
             <h2 className="text-xl font-bold text-[#1A1A2E] dark:text-white mb-1">
               Sugerencia de Producción
             </h2>
-            <Badge variant="secondary" className="flex items-center gap-1.5 w-fit">
+            <Badge
+              variant="secondary"
+              className="flex items-center gap-1.5 w-fit"
+            >
               <Calendar className="h-3 w-3" />
               <span className="capitalize">{data.diaSemana}</span>
             </Badge>
@@ -58,15 +61,16 @@ export function ProduccionSugeridaWidget() {
       {/* Info */}
       <div className="bg-white dark:bg-[#1A1A2E] rounded-xl p-4 mb-5 border-2 border-[#E5E9F2] dark:border-[#2D2D44]">
         <p className="text-sm text-[#424C63] dark:text-[#B8BCC8]">
-          Basado en el promedio histórico de los <span className="font-bold text-[#00C9A7]">{data.diaSemana}s</span>,
-          te sugerimos producir:
+          Basado en el promedio histórico de los{" "}
+          <span className="font-bold text-[#00C9A7]">{data.diaSemana}</span>, te
+          sugerimos producir:
         </p>
       </div>
 
       {/* Lista de sugerencias */}
       <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
         {data.predicciones.map((pred: any, index: number) => {
-          const esTop3 = index < 3
+          const esTop3 = index < 3;
           return (
             <div
               key={pred.productoId}
@@ -89,7 +93,8 @@ export function ProduccionSugeridaWidget() {
                     {pred.nombre}
                   </p>
                   <p className="text-xs text-[#6B7A94] dark:text-[#8E92A0]">
-                    Basado en {pred.basadoEnDias} {pred.basadoEnDias === 1 ? "día" : "días"}
+                    Basado en {pred.basadoEnDias}{" "}
+                    {pred.basadoEnDias === 1 ? "día" : "días"}
                   </p>
                 </div>
               </div>
@@ -100,7 +105,7 @@ export function ProduccionSugeridaWidget() {
                 {esTop3 && <TrendingUp className="h-5 w-5 text-[#00C9A7]" />}
               </div>
             </div>
-          )
+          );
         })}
       </div>
 
@@ -108,10 +113,11 @@ export function ProduccionSugeridaWidget() {
       <div className="mt-5 p-4 bg-[#00C9A7]/10 border-2 border-[#00C9A7]/20 rounded-xl">
         <p className="text-xs text-[#424C63] dark:text-[#B8BCC8]">
           <span className="text-lg mr-1">💡</span>
-          <strong className="text-[#00C9A7]">Tip:</strong> Estas cantidades son estimaciones basadas en tu historial.
-          Ajusta según eventos especiales o cambios en la demanda.
+          <strong className="text-[#00C9A7]">Tip:</strong> Estas cantidades son
+          estimaciones basadas en tu historial. Ajusta según eventos especiales
+          o cambios en la demanda.
         </p>
       </div>
     </div>
-  )
+  );
 }

@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { StatsCards } from "@/components/estadisticas/StatsCards"
-import { PromediosTable } from "@/components/estadisticas/PromediosTable"
-import { PromediosChart } from "@/components/estadisticas/PromediosChart"
-import { BarChart3, Info } from "lucide-react"
+import { StatsCards } from "@/components/estadisticas/StatsCards";
+import { PromediosTable } from "@/components/estadisticas/PromediosTable";
+import { PromediosChart } from "@/components/estadisticas/PromediosChart";
+import { BarChart3, Info } from "lucide-react";
 
 export default function PromediosPage() {
   return (
@@ -30,11 +30,14 @@ export default function PromediosPage() {
             <Info className="h-6 w-6 text-white" />
           </div>
           <div className="text-sm text-[#424C63] dark:text-[#B8BCC8]">
-            <p className="font-bold text-base text-[#1A1A2E] dark:text-white mb-2">¿Cómo usar estos promedios?</p>
+            <p className="font-bold text-base text-[#1A1A2E] dark:text-white mb-2">
+              ¿Cómo usar estos promedios?
+            </p>
             <p>
-              Los promedios te ayudan a predecir cuánto debes producir cada día. Por
-              ejemplo, si el promedio del lunes es 50 empanadas de carne, considera
-              producir esa cantidad (o un poco más) para el próximo lunes.
+              Los promedios te ayudan a predecir cuánto debes producir cada día.
+              Por ejemplo, si el promedio del lunes es 50 empanadas de carne,
+              considera producir esa cantidad (o un poco más) para el próximo
+              lunes.
             </p>
           </div>
         </div>
@@ -42,10 +45,6 @@ export default function PromediosPage() {
 
       {/* Stats Cards */}
       <StatsCards />
-
-      {/* Gráfico */}
-      <PromediosChart />
-
       {/* Tabla Detallada */}
       <div>
         <div className="mb-6">
@@ -58,15 +57,18 @@ export default function PromediosPage() {
         </div>
         <PromediosTable />
       </div>
+      {/* Gráfico */}
+      <PromediosChart />
 
       {/* Nota al pie */}
       <div className="bg-gradient-to-r from-[#8B5FBF]/5 to-transparent border-2 border-[#8B5FBF]/10 rounded-xl p-5">
         <p className="text-sm text-[#424C63] dark:text-[#B8BCC8]">
-          <span className="font-bold text-[#8B5FBF]">Nota:</span> Los promedios se calculan basándose en todas las
-          ventas históricas registradas. Cuantos más datos tengas, más precisos serán
-          los promedios. El día actual está resaltado con lavender.
+          <span className="font-bold text-[#8B5FBF]">Nota:</span> Los promedios
+          se calculan basándose en todas las ventas históricas registradas.
+          Cuantos más datos tengas, más precisos serán los promedios. El día
+          actual está resaltado con lavender.
         </p>
       </div>
     </div>
-  )
+  );
 }
