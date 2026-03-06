@@ -53,6 +53,19 @@ export function useEstadisticasHoy() {
   })
 }
 
+export function useEstadisticasDelDia(fecha: string) {
+  return useQuery({
+    queryKey: ["estadisticas", "dia", fecha],
+    queryFn: async () => {
+      const response = await fetch(`/api/estadisticas/dia?fecha=${fecha}`)
+      if (!response.ok) throw new Error("Error al cargar estadísticas del día")
+      return response.json()
+    },
+    enabled: !!fecha,
+    staleTime: 1 * 60 * 1000,
+  })
+}
+
 export function usePrediccionProduccion() {
   return useQuery({
     queryKey: ["estadisticas", "prediccion"],

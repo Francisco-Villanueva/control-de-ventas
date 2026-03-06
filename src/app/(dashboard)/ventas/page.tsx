@@ -4,16 +4,13 @@ import { useState } from "react";
 import { CalendarioSelector } from "@/components/ventas/CalendarioSelector";
 import { VentaDiariaForm } from "@/components/ventas/VentaDiariaForm";
 import { VentasList } from "@/components/ventas/VentasList";
+import { EstadisticasDelDia } from "@/components/ventas/EstadisticasDelDia";
 import { TrendingUp } from "lucide-react";
 import { format } from "date-fns";
 
 export default function VentasPage() {
   const [fechaSeleccionada, setFechaSeleccionada] = useState<Date>(new Date());
 
-  console.log("fecha seleccionad", {
-    ORIGNAL: fechaSeleccionada,
-    FORMATED: format(fechaSeleccionada, "yyyy-MM-dd"),
-  });
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -36,6 +33,9 @@ export default function VentasPage() {
         fecha={fechaSeleccionada}
         onFechaChange={setFechaSeleccionada}
       />
+
+      {/* Estadísticas del día seleccionado */}
+      <EstadisticasDelDia fecha={fechaSeleccionada} />
 
       {/* Grid con formulario e historial */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
