@@ -3,8 +3,8 @@
 import { usePromediosPorDiaSemana } from "@/hooks/useEstadisticas"
 import { TrendingUp, TrendingDown, Calendar, Package } from "lucide-react"
 
-export function StatsCards() {
-  const { data: promedios, isLoading } = usePromediosPorDiaSemana()
+export function StatsCards({ mes }: { mes?: string }) {
+  const { data: promedios, isLoading } = usePromediosPorDiaSemana(mes)
 
   if (isLoading || !promedios || promedios.length === 0) {
     return null

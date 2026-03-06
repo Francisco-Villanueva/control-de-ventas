@@ -9,11 +9,24 @@ import {
 } from "date-fns";
 import { fromPrismaDate, fromDateString, toUTCDate } from "@/lib/dateUtils";
 
-export async function getPromediosPorDiaSemana(userId: string) {
-  // Obtener todas las ventas del usuario
+export async function getPromediosPorDiaSemana(userId: string, mes?: string) {
+  // Construir filtro de fecha si se especifica un mes
+  let fechaFiltro: { gte?: Date; lte?: Date } | undefined
+  if (mes) {
+    const [year, month] = mes.split("-").map(Number)
+    const inicio = startOfMonth(new Date(year, month - 1))
+    const fin = endOfMonth(new Date(year, month - 1))
+    fechaFiltro = {
+      gte: toUTCDate(format(inicio, "yyyy-MM-dd")),
+      lte: toUTCDate(format(fin, "yyyy-MM-dd")),
+    }
+  }
+
+  // Obtener ventas del usuario (filtradas por mes si corresponde)
   const ventas = await prisma.venta.findMany({
     where: {
       userId,
+      ...(fechaFiltro ? { fecha: fechaFiltro } : {}),
     },
     include: {
       producto: true,

@@ -1,10 +1,11 @@
 import { useQuery } from "@tanstack/react-query"
 
-export function usePromediosPorDiaSemana() {
+export function usePromediosPorDiaSemana(mes?: string) {
   return useQuery({
-    queryKey: ["estadisticas", "promedios"],
+    queryKey: ["estadisticas", "promedios", mes ?? "historico"],
     queryFn: async () => {
-      const response = await fetch("/api/estadisticas/promedios")
+      const url = `/api/estadisticas/promedios${mes ? `?mes=${mes}` : ""}`
+      const response = await fetch(url)
       if (!response.ok) throw new Error("Error al cargar promedios")
       return response.json()
     },

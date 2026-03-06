@@ -23,8 +23,8 @@ const COLORS = [
   "#10D47C", // Success
 ];
 
-export function PromediosChart() {
-  const { data: promedios, isLoading } = usePromediosPorDiaSemana();
+export function PromediosChart({ mes }: { mes?: string }) {
+  const { data: promedios, isLoading } = usePromediosPorDiaSemana(mes);
 
   if (isLoading) {
     return (

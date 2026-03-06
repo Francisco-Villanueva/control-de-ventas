@@ -1,11 +1,35 @@
 "use client";
 
+import { useState } from "react";
+import { format, addMonths, subMonths, startOfMonth } from "date-fns";
+import { es } from "date-fns/locale";
 import { StatsCards } from "@/components/estadisticas/StatsCards";
 import { PromediosTable } from "@/components/estadisticas/PromediosTable";
 import { PromediosChart } from "@/components/estadisticas/PromediosChart";
-import { BarChart3, Info } from "lucide-react";
+import { BarChart3, Info, ChevronLeft, ChevronRight } from "lucide-react";
+
+function capitalize(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
 
 export default function PromediosPage() {
+  const [mesDate, setMesDate] = useState(() => startOfMonth(new Date()));
+  const mes = format(mesDate, "yyyy-MM");
+  const mesLabel = capitalize(format(mesDate, "MMMM yyyy", { locale: es }));
+
+  const hoy = startOfMonth(new Date());
+  const esMesFuturo = mesDate > hoy;
+
+  function irMesAnterior() {
+    setMesDate((prev) => subMonths(prev, 1));
+  }
+
+  function irMesSiguiente() {
+    if (!esMesFuturo) {
+      setMesDate((prev) => addMonths(prev, 1));
+    }
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -43,8 +67,33 @@ export default function PromediosPage() {
         </div>
       </div>
 
+      {/* Selector de mes */}
+      <div className="flex items-center justify-center">
+        <div className="flex items-center gap-2 bg-white dark:bg-[#1A1A2E] border border-[#8B5FBF]/20 rounded-xl shadow-sm px-2 py-1">
+          <button
+            onClick={irMesAnterior}
+            className="p-2 rounded-lg hover:bg-[#8B5FBF]/10 text-[#8B5FBF] transition-colors"
+            aria-label="Mes anterior"
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </button>
+          <span className="px-4 py-1 text-base font-semibold text-[#1A1A2E] dark:text-white min-w-[160px] text-center">
+            {mesLabel}
+          </span>
+          <button
+            onClick={irMesSiguiente}
+            disabled={esMesFuturo}
+            className="p-2 rounded-lg hover:bg-[#8B5FBF]/10 text-[#8B5FBF] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            aria-label="Mes siguiente"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </button>
+        </div>
+      </div>
+
       {/* Stats Cards */}
-      <StatsCards />
+      <StatsCards mes={mes} />
+
       {/* Tabla Detallada */}
       <div>
         <div className="mb-6">
@@ -55,18 +104,19 @@ export default function PromediosPage() {
             Promedios de ventas por producto y día de la semana
           </p>
         </div>
-        <PromediosTable />
+        <PromediosTable mes={mes} />
       </div>
+
       {/* Gráfico */}
-      <PromediosChart />
+      <PromediosChart mes={mes} />
 
       {/* Nota al pie */}
       <div className="bg-gradient-to-r from-[#8B5FBF]/5 to-transparent border-2 border-[#8B5FBF]/10 rounded-xl p-5">
         <p className="text-sm text-[#424C63] dark:text-[#B8BCC8]">
           <span className="font-bold text-[#8B5FBF]">Nota:</span> Los promedios
-          se calculan basándose en todas las ventas históricas registradas.
-          Cuantos más datos tengas, más precisos serán los promedios. El día
-          actual está resaltado con lavender.
+          se calculan basándose en las ventas del mes seleccionado. Cuantos más
+          datos tengas, más precisos serán los promedios. El día actual está
+          resaltado con lavender.
         </p>
       </div>
     </div>

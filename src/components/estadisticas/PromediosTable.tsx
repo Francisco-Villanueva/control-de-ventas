@@ -4,8 +4,8 @@ import { usePromediosPorDiaSemana } from "@/hooks/useEstadisticas"
 import { Loader2, TrendingUp, Calendar } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 
-export function PromediosTable() {
-  const { data: promedios, isLoading } = usePromediosPorDiaSemana()
+export function PromediosTable({ mes }: { mes?: string }) {
+  const { data: promedios, isLoading } = usePromediosPorDiaSemana(mes)
 
   if (isLoading) {
     return (
